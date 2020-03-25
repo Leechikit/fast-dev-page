@@ -1,5 +1,5 @@
 <template>
-  <fd-toc-page>
+  <div class="fd-design-pane">
     <!-- <fd-axis-pane v-if="isShowPage" /> -->
     <draggable
       v-if="isRendered"
@@ -28,10 +28,7 @@
           v-for="(item, index) in list"
           @click="onSelect(index, item)"
         >
-          <el-form-item :label="item.label" :prop="item.id" :rules="item.rules">
-            <fd-component :key="rerender" :data="item" />
-            <div class="fd-item-tips" v-if="item.tips" v-html="item.tips" />
-          </el-form-item>
+          <fd-component :key="rerender" :data="item" />
           <div class="fd-dnd-overlay"></div>
           <el-button-group class="fd-dnd-buttons" v-if="selectIndex === index">
             <el-button
@@ -50,7 +47,7 @@
         </div>
       </template>
     </draggable>
-  </fd-toc-page>
+  </div>
 </template>
 <script>
 import draggable from 'vuedraggable'
@@ -79,9 +76,8 @@ export default {
     }
   },
   mounted() {
-    const { children } = this.toc.children[0]
     this.$nextTick(() => {
-      this.list = children
+      this.list = this.toc.children
       this.isRendered = true
     })
   },
@@ -123,8 +119,7 @@ export default {
     toc: {
       handler(newVal) {
         if (newVal) {
-          const { children } = newVal.children[0]
-          this.list = children
+          this.list = newVal.children
           this.rerender = Date.now()
         }
       },
@@ -134,6 +129,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.fd-design-pane {
+  height: calc(100vh - 54px);
+}
 .fd-dnd-area {
   position: relative;
   min-height: 100%;

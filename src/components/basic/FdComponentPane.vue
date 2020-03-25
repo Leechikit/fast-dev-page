@@ -15,7 +15,7 @@
           v-for="(comp, idx) in defaults[type]"
           :key="idx"
         >
-          <span><fd-icon :name="comp.icon" />{{ comp.label }}</span>
+          <span>{{ comp.label }}</span>
         </div>
       </draggable>
     </div>

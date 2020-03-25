@@ -19,70 +19,11 @@ export default new Vuex.Store({
         },
         style: {},
         events: {},
-        children: [
-          {
-            id: Utils.namespace('Form'),
-            label: '表单',
-            name: 'ElForm',
-            attrs: {},
-            className: {},
-            style: {},
-            events: {
-              on: {},
-              nativeOn: {}
-            },
-            props: {
-              'label-position': 'top',
-              'label-width': '120px'
-            },
-            children: []
-          }
-        ]
-      },
-      SHOW: {
-        id: Utils.namespace('fd.show'),
-        name: 'div',
-        label: '展示页面',
-        attrs: [],
-        props: {},
-        className: {
-          'fd-page': true
-        },
-        style: {},
-        events: {},
-        children: [
-          {
-            id: Utils.namespace('Form'),
-            label: '表单',
-            name: 'ElForm',
-            attrs: {},
-            className: {},
-            style: {},
-            events: {
-              on: {},
-              nativeOn: {}
-            },
-            props: {
-              'label-position': 'top',
-              'label-width': '120px'
-            },
-            children: []
-          }
-        ]
+        children: []
       }
     },
     defaults: {
-      FORM: generate(
-        'input',
-        'textarea',
-        'input-number',
-        'date-picker',
-        'radio-group',
-        'checkbox-group',
-        'select',
-        'select-multiple'
-      ),
-      SHOW: generate('table')
+      FORM: generate('FdImage')
     },
     selectIndex: -1,
     selectComponent: null,
@@ -122,7 +63,7 @@ export default new Vuex.Store({
     },
     updateRenderList(state, payload) {
       const { pageType, toc } = state
-      toc[pageType].children[0].children = payload
+      toc[pageType].children = payload
     }
   },
   getters: {

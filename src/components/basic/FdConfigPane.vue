@@ -173,7 +173,7 @@ export default {
       'selectSource'
     ]),
     emptyText() {
-      const { children } = this.toc.children[0]
+      const children = this.toc.children
       return children && children.length
         ? '请选择一个组件来设置属性'
         : '请添加组件'

@@ -6,10 +6,11 @@
         <fd-component-pane :type="page.pageType" />
       </div>
       <div class="main">
-        <fd-design-pane v-if="pageName" />
+        <component :is="'fd-image'"></component>
+        <fd-design-pane />
       </div>
       <div class="panel">
-        <fd-config-pane v-if="pageName" :key="selectIndex" />
+        <fd-config-pane :key="selectIndex" />
       </div>
     </div>
   </div>
@@ -34,7 +35,6 @@ export default {
     return {
       sidebarItemActive: false,
       siteName: '',
-      pageName: '',
       radioType: this.$route.query.mode,
       hadEntity: null,
       fieldData: [],
