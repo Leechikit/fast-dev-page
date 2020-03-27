@@ -78,7 +78,7 @@ export default new Vuex.Store({
     selectComponent: state =>
       state.selectIndex === -1
         ? null
-        : state.toc[state.pageType].children[0].children[state.selectIndex]
+        : state.toc[state.pageType].children[state.selectIndex]
   },
   modules: {}
 })

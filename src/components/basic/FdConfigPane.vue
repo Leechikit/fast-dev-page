@@ -51,6 +51,12 @@
                   <el-form-item label="辅助文字">
                     <el-input v-model.trim="selectComponent.tips" clearable />
                   </el-form-item>
+                  <el-form-item label="URL">
+                    <el-input
+                      v-model.trim="selectComponent.props.url"
+                      clearable
+                    />
+                  </el-form-item>
                 </div>
                 <div
                   class="fd-field-conf"
