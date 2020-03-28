@@ -15,7 +15,7 @@ const Image = {
   },
   props: {
     url: 'http://iph.href.lu/800x200',
-    name: '',
+    name: '图片',
     type: '',
     value: '',
     maxlength: null,

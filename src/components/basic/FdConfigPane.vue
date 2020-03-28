@@ -57,6 +57,12 @@
                       clearable
                     />
                   </el-form-item>
+                  <el-form-item label="名字">
+                    <el-input
+                      v-model.trim="selectComponent.props.name"
+                      clearable
+                    />
+                  </el-form-item>
                 </div>
                 <div
                   class="fd-field-conf"
