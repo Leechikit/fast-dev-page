@@ -27,7 +27,7 @@
                     />
                   </el-form-item>
                   <el-form-item
-                    v-for="(item, key) in selectComponent.props"
+                    v-for="(item, key) in selectComponent.configs"
                     :key="key"
                     :label="item.label"
                   >

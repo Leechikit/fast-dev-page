@@ -3,7 +3,7 @@ const Image = {
   label: '图片组件',
   icon: 'input',
   tips: '',
-  props: {
+  configs: {
     url: {
       name: 'ConfigInput',
       label: 'URL',
@@ -15,6 +15,7 @@ const Image = {
       value: '图片'
     }
   },
+  props: {},
   rules: {
     required: false,
     message: ''

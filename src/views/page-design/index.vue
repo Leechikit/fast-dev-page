@@ -1,6 +1,24 @@
 <template>
   <div class="fd-page-design">
-    <div class="head"></div>
+    <div class="head">
+      <div class="head-center"></div>
+      <div class="head-right">
+        <el-button
+          size="mini"
+          icon="el-icon-view"
+          :loading="loading.preview"
+          @click="onAction('preview')"
+          >预览</el-button
+        >
+        <el-button
+          size="mini"
+          icon="el-icon-finished"
+          :loading="loading.save"
+          @click="onAction('save')"
+          >保存</el-button
+        >
+      </div>
+    </div>
     <div class="container">
       <div class="sidebar">
         <fd-component-pane :type="page.pageType" />
@@ -12,6 +30,7 @@
         <fd-config-pane :key="selectIndex" />
       </div>
     </div>
+    <entity-preview-drawer v-if="drawer.entity" @on-close="onCloseDrawer" />
   </div>
 </template>
 
@@ -20,12 +39,15 @@ import { mapGetters } from 'vuex'
 import FdDesignPane from '@/components/basic/FdDesignPane'
 import FdComponentPane from '@/components/basic/FdComponentPane'
 import FdConfigPane from '@/components/basic/FdConfigPane'
+import EntityPreviewDrawer from './dialog/EntityPreviewDrawer'
+
 export default {
   name: 'FdPageDesign',
   components: {
     FdConfigPane,
     FdComponentPane,
-    FdDesignPane
+    FdDesignPane,
+    EntityPreviewDrawer
   },
   computed: {
     ...mapGetters(['toc', 'selectIndex', 'isFormPage'])
@@ -53,7 +75,33 @@ export default {
     }
   },
   mounted() {},
-  methods: {}
+  methods: {
+    async onAction(type) {
+      if (type === 'preview') {
+        return this.onOpenDrawer('entity')
+      } else {
+        const { children } = this.toc.children[0]
+        if (!children.length) {
+          return this.$message.warning(`页面内容不能为空`)
+        }
+        this.loading[type] = true
+        try {
+          console.log(this.toc)
+        } catch (e) {
+          console.log(e)
+        } finally {
+          this.loading[type] = false
+        }
+        return true
+      }
+    },
+    onOpenDrawer(name) {
+      this.drawer[name] = true
+    },
+    onCloseDrawer({ name }) {
+      this.drawer[name] = false
+    }
+  }
 }
 </script>
 
@@ -74,7 +122,7 @@ export default {
   }
 }
 .fd-page-design {
-  position: fixed;
+  position: absolute;
   display: flex;
   width: 100%;
   height: 100%;
