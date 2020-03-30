@@ -23,7 +23,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  store.commit('updatePageType', to.query.pageType || 'FORM')
+  store.commit('updatePageType', to.query.pageType || 'PAGE')
   next()
 })
 

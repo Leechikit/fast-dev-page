@@ -120,7 +120,7 @@ export default {
       handler(newVal) {
         if (newVal) {
           this.list = newVal.children
-          this.rerender = Date.now()
+          // this.rerender = Date.now()
         }
       },
       deep: true
@@ -131,6 +131,7 @@ export default {
 <style lang="scss" scoped>
 .fd-design-pane {
   height: calc(100vh - 54px);
+  overflow-y: auto;
 }
 .fd-dnd-area {
   position: relative;

@@ -53,10 +53,14 @@ const Utils = {
   },
   getVNodeProps(schema) {
     const { props, attrs, events, className, style } = schema
+    let formatProps = {}
+    for (let key in props) {
+      formatProps[key] = props[key].value
+    }
     const { on, nativeOn } = events || {}
     return {
       class: className,
-      props,
+      props: formatProps,
       attrs,
       on,
       nativeOn,

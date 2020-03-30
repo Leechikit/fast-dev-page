@@ -6,7 +6,6 @@
         <fd-component-pane :type="page.pageType" />
       </div>
       <div class="main">
-        <component :is="'fd-image'"></component>
         <fd-design-pane />
       </div>
       <div class="panel">

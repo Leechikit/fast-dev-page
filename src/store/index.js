@@ -8,10 +8,10 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     toc: {
-      FORM: {
-        id: Utils.namespace('fd.form'),
+      PAGE: {
+        id: Utils.namespace('fd.page'),
         name: 'div',
-        label: '单据页面',
+        label: '页面',
         attrs: [],
         props: {},
         className: {
@@ -23,7 +23,7 @@ export default new Vuex.Store({
       }
     },
     defaults: {
-      FORM: generate('FdImage')
+      PAGE: generate('FdImage')
     },
     selectIndex: -1,
     selectComponent: null,
@@ -53,12 +53,12 @@ export default new Vuex.Store({
     },
     addComponent(state, payload) {
       const { pageType, toc, selectIndex } = state
-      const { children } = toc[pageType].children[0]
+      const { children } = toc[pageType]
       children.splice(selectIndex, 0, payload)
     },
     delComponent(state) {
       const { pageType, toc, selectIndex } = state
-      const { children } = toc[pageType].children[0]
+      const { children } = toc[pageType]
       children.splice(selectIndex, 1)
     },
     updateRenderList(state, payload) {

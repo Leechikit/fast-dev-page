@@ -3,33 +3,17 @@ const Image = {
   label: '图片组件',
   icon: 'input',
   tips: '',
-  attrs: {
-    name: '',
-    autocomplete: 'off',
-    placeholder: '',
-    max: null,
-    min: null,
-    step: null,
-    readonly: false,
-    autofocus: false
-  },
   props: {
-    url: 'http://iph.href.lu/800x200',
-    name: '图片',
-    type: '',
-    value: '',
-    maxlength: null,
-    minlength: null,
-    clearable: false,
-    disabled: false,
-    size: '',
-    autosize: false,
-    resize: '',
-    'prefix-icon': '',
-    'suffix-icon': '',
-    'show-password': false,
-    'validate-event': true,
-    'show-word-limit': false
+    url: {
+      name: 'ConfigInput',
+      label: 'URL',
+      value: 'http://iph.href.lu/800x200'
+    },
+    alt: {
+      name: 'ConfigInput',
+      label: '图片描述',
+      value: '图片'
+    }
   },
   rules: {
     required: false,

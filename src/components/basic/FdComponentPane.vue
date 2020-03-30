@@ -28,14 +28,15 @@ import Utils from '@/helper/utils'
 const CAPTION_MAP = {
   FORM: '基础组件',
   SHOW: '数据组件',
-  TEXT: '文本组件'
+  TEXT: '文本组件',
+  PAGE: '页面组件'
 }
 export default {
   name: 'FdComponentPane',
   props: {
     type: {
       type: String,
-      default: 'FORM'
+      default: 'PAGE'
     }
   },
   components: {

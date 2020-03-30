@@ -1,6 +1,6 @@
 <template>
   <div class="fd-config">
-    <div class="fd-config-form" v-if="isFormPage">
+    <div class="fd-config-form">
       <nav class="fd-config-nav">
         <span
           :class="{
@@ -19,9 +19,6 @@
             <div class="fd-field-conf-pane">
               <el-form size="mini" label-position="top">
                 <div class="fd-field-conf">
-                  <el-form-item label="字段标题">
-                    <el-input v-model.trim="selectComponent.label" clearable />
-                  </el-form-item>
                   <el-form-item label="字段编码">
                     <el-input
                       @blur="onInputBlur"
@@ -30,77 +27,15 @@
                     />
                   </el-form-item>
                   <el-form-item
-                    label="占位文字"
-                    v-if="
-                      ['ElInput', 'ElSelect', 'ElDatePicker'].includes(
-                        selectComponent.name
-                      )
-                    "
+                    v-for="(item, key) in selectComponent.props"
+                    :key="key"
+                    :label="item.label"
                   >
-                    <el-input
-                      v-if="selectComponent.name === 'ElInput'"
-                      v-model.trim="selectComponent.attrs.placeholder"
-                      clearable
-                    />
-                    <el-input
-                      v-else
-                      v-model.trim="selectComponent.props.placeholder"
-                      clearable
-                    />
-                  </el-form-item>
-                  <el-form-item label="辅助文字">
-                    <el-input v-model.trim="selectComponent.tips" clearable />
-                  </el-form-item>
-                  <el-form-item label="URL">
-                    <el-input
-                      v-model.trim="selectComponent.props.url"
-                      clearable
-                    />
-                  </el-form-item>
-                  <el-form-item label="名字">
-                    <el-input
-                      v-model.trim="selectComponent.props.name"
-                      clearable
-                    />
-                  </el-form-item>
-                </div>
-                <div
-                  class="fd-field-conf"
-                  v-if="selectComponent.name === 'ElDatePicker'"
-                >
-                  <el-form-item label="类型">
-                    <el-radio-group
-                      class="mt-8"
-                      size="mini"
-                      v-model="selectComponent.props.type"
-                    >
-                      <el-radio-button label="date">日期</el-radio-button>
-                      <el-radio-button label="daterange"
-                        >日期范围</el-radio-button
-                      >
-                      <el-radio-button label="datetimerange"
-                        >日期时间范围</el-radio-button
-                      >
-                    </el-radio-group>
-                  </el-form-item>
-                </div>
-                <div
-                  class="fd-field-conf"
-                  v-if="
-                    selectComponent.children && selectComponent.children.length
-                  "
-                >
-                  <el-form-item label="选项">
-                    <!-- <fd-data-option :data="selectComponent" /> -->
-                  </el-form-item>
-                </div>
-                <div class="fd-field-conf">
-                  <el-form-item label="校验">
-                    <el-checkbox
-                      label="必填"
-                      v-model="selectComponent.rules.required"
-                      @change="onRequireCheck"
-                    />
+                    <config-component
+                      :type="item.name"
+                      v-model="item.value"
+                      :config="item.config"
+                    ></config-component>
                   </el-form-item>
                 </div>
               </el-form>
@@ -166,12 +101,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import ConfigComponent from '@/config/index.vue'
 // import FdDataOption from './FdInputOption'
 // import FdDataSourceDialog from './FdDataSourceDialog'
 // import FdDataSourceList from './FdDataSourceList'
 export default {
   name: 'FdConfigPane',
   components: {
+    ConfigComponent
     // FdDataSourceList,
     // FdDataSourceDialog,
     // FdDataOption
