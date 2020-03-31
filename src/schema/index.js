@@ -3,6 +3,20 @@ const install = function(name, component) {
   Vue.component(name, component)
 }
 
+const setDefaultConfig = function(config) {
+  const defaultConfig = {
+    padding: {
+      label: '组件间距',
+      name: 'ConfigPadding',
+      value: ['0', '0', '0', '0'],
+      config: {
+        append: 'px'
+      }
+    }
+  }
+  return Object.assign({}, config, defaultConfig)
+}
+
 const Generate = function() {
   const comps = []
   const defaults = [...arguments]
@@ -14,6 +28,7 @@ const Generate = function() {
   })
   requireAll(requireSchemas).forEach(item => {
     if (defaults.includes(item.default.name)) {
+      item.default.configs = setDefaultConfig(item.default.configs)
       comps.push(item.default)
     }
   })
