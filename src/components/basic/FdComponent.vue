@@ -22,7 +22,21 @@ export default {
           })
         })
       : []
-    return h(name, property, VNode)
+    const { padding: paddingArrs } = property.props
+    const [paddingTop, paddingRight, paddingBottom, paddingLeft] = paddingArrs
+    return h(
+      'div',
+      {
+        class: 'fd-component',
+        style: {
+          paddingTop,
+          paddingRight,
+          paddingBottom,
+          paddingLeft
+        }
+      },
+      [h(name, property, VNode)]
+    )
   }
 }
 </script>

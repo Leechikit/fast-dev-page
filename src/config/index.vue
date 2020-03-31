@@ -23,11 +23,14 @@ export default {
     }
   },
   watch: {
-    value(val) {
-      this.currentValue = val
+    value: {
+      handler() {
+        this.currentValue = this.value
+      },
+      deep: true
     },
-    currentValue(val) {
-      this.$emit('input', val)
+    currentValue() {
+      this.$emit('input', this.currentValue)
     }
   }
 }

@@ -18,11 +18,13 @@ export default {
     }
   },
   watch: {
-    value(val) {
-      this.currentValue = val
+    value() {
+      if (this.value !== this.currentValue) {
+        this.currentValue = this.value
+      }
     },
-    currentValue(val) {
-      this.$emit('input', val)
+    currentValue() {
+      this.$emit('input', this.currentValue)
     }
   }
 }

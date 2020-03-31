@@ -158,11 +158,11 @@ export default {
   cursor: move;
   position: relative;
   z-index: 10;
-  padding: 12px 20px 10px;
+  // padding: 12px 20px 10px;
   display: table;
   width: 100%;
   border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
+  // border-right: 5px solid transparent;
   ::v-deep {
     .el-form-item__label {
     }
@@ -193,7 +193,7 @@ export default {
 .fd-dnd-buttons {
   position: absolute;
   bottom: 0;
-  right: -1px;
+  right: 0;
   z-index: 11;
   .el-button {
     border-radius: 0;

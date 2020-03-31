@@ -52,8 +52,8 @@ const Utils = {
     return result
   },
   getVNodeProps(schema) {
-    const { configs, attrs, events, className, style } = schema
-    let formatProps = {}
+    const { props, configs, attrs, events, className, style } = schema
+    let formatProps = props
     for (let key in configs) {
       formatProps[key] = configs[key].value
     }

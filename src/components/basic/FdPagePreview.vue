@@ -38,7 +38,6 @@ export default {
   mounted() {
     if (this.mode === 'preview') {
       this.formItems = Utils.deepClone(this.toc).children
-      console.log(this.formItems)
     } else {
       const { productData } = this.data
       this.formItems = productData ? JSON.parse(productData).children : []
