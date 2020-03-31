@@ -15,7 +15,7 @@
           v-for="(comp, idx) in defaults[type]"
           :key="idx"
         >
-          <span>{{ comp.label }}</span>
+          <span><fd-icon :name="comp.icon" />{{ comp.label }}</span>
         </div>
       </draggable>
     </div>
@@ -25,6 +25,8 @@
 import draggable from 'vuedraggable'
 import { mapGetters } from 'vuex'
 import Utils from '@/helper/utils'
+import FdIcon from '@/components/basic/FdIcon'
+
 const CAPTION_MAP = {
   FORM: '基础组件',
   SHOW: '数据组件',
@@ -40,7 +42,8 @@ export default {
     }
   },
   components: {
-    draggable
+    draggable,
+    FdIcon
   },
   computed: {
     ...mapGetters(['defaults']),

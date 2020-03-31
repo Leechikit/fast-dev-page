@@ -1,7 +1,7 @@
 const Image = {
   name: 'FdImage',
   label: '图片组件',
-  icon: 'input',
+  icon: 'image',
   tips: '',
   configs: {
     url: {
