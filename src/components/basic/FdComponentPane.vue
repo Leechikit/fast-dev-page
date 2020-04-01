@@ -8,6 +8,7 @@
         :group="{ name: 'form', pull: 'clone', put: false }"
         :list="defaults[type]"
         class="fd-dnd-comp-list"
+        @end="dragend"
       >
         <div
           class="fd-dnd-comp-item"
@@ -23,6 +24,7 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
+import bus from '@/helper/bus'
 import { mapGetters } from 'vuex'
 import Utils from '@/helper/utils'
 import FdIcon from '@/components/basic/FdIcon'
@@ -53,10 +55,15 @@ export default {
   },
   methods: {
     onAddComp(row) {
-      return Utils.deepClone({
+      let comp = Utils.deepClone({
         ...row,
         ...{ id: Utils.guid() }
       })
+      bus.$emit('dragstart', comp)
+      return comp
+    },
+    dragend() {
+      bus.$emit('dragend')
     }
   }
 }

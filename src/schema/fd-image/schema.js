@@ -21,7 +21,7 @@ const Image = {
     maxWidth: 800,
     maxHeight: 400,
     defaultWidth: 800,
-    defaultHieght: 200
+    defaultHeight: 200
   },
   props: {},
   rules: {
