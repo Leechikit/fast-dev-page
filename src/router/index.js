@@ -15,6 +15,11 @@ const routes = [
     path: '/page-design',
     name: 'page-design',
     component: () => import('@/views/page-design/index.vue')
+  },
+  {
+    path: '/flow-design',
+    name: 'flow-design',
+    component: () => import('@/views/flow-design/index.vue')
   }
 ]
 
