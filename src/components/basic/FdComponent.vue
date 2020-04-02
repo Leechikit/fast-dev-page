@@ -32,7 +32,10 @@ export default {
           paddingTop,
           paddingRight,
           paddingBottom,
-          paddingLeft
+          paddingLeft,
+          width: '100%',
+          height: '100%',
+          overflow: 'hidden'
         }
       },
       [h(name, property, VNode)]
