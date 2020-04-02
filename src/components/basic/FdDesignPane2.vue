@@ -1,6 +1,5 @@
 <template>
   <div class="fd-design-pane">
-    <!-- <fd-axis-pane v-if="isShowPage" /> -->
     <div class="fd-layout">
       <div
         v-show="dragareaVisible"
@@ -50,71 +49,19 @@
       </div>
       <div class="fd-layout-background"></div>
     </div>
-    <!-- <draggable
-      v-if="isRendered"
-      :animation="200"
-      :list="list"
-      :class="{
-        'is-show-page': isShowPage
-      }"
-      ghost-class="fd-ghost"
-      class="fd-dnd-area"
-      @add="onAdd"
-      @end="onMoveEnd"
-      @start="onMoveStart"
-      group="form"
-    >
-      <div class="fd-dnd-placeholder" v-if="list.length === 0">
-        从左侧拖拽来添加数据项
-      </div>
-      <template v-else>
-        <div
-          :class="{
-            'fd-dnd-form-item': true,
-            'is-active': selectIndex === index
-          }"
-          :key="item.id"
-          v-for="(item, index) in list"
-          @click="onSelect(index, item)"
-        >
-          <fd-component :key="rerender" :data="item" />
-          <div class="fd-dnd-overlay"></div>
-          <el-button-group class="fd-dnd-buttons" v-if="selectIndex === index">
-            <el-button
-              type="primary"
-              size="mini"
-              icon="el-icon-document-copy"
-              @click.stop="onCopy(index, item)"
-            />
-            <el-button
-              type="primary"
-              size="mini"
-              icon="el-icon-delete"
-              @click.stop="onDelete(index)"
-            />
-          </el-button-group>
-        </div>
-      </template>
-    </draggable> -->
   </div>
 </template>
 <script>
-// import draggable from 'vuedraggable'
 import VueGridLayout from 'vue-grid-layout'
 import { findIndex } from 'lodash'
-// import FdTocPage from './FdTocPage'
 import { mapGetters, mapMutations } from 'vuex'
 import Utils from '@/helper/utils'
 import FdComponent from './FdComponent'
 import bus from '@/helper/bus'
-// import FdAxisPane from './FdAxisPane'
 export default {
   name: 'FdDesignPane',
   components: {
-    // FdAxisPane,
-    // FdTocPage,
     FdComponent,
-    // draggable,
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem
   },
