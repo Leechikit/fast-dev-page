@@ -18,6 +18,7 @@ import G6 from '@antv/g6'
 import { mapGetters, mapMutations } from 'vuex'
 import Utils from '@/helper/utils'
 import bus from '@/helper/bus'
+import '@/helper/flowchart.js'
 export default {
   name: 'FdFlowPane',
   computed: {
@@ -58,12 +59,12 @@ export default {
     this.graph = new G6.Graph({
       container: 'flowchart',
       modes: {
-        default: ['drag-node', 'click-select']
+        default: ['drag-node', 'activate-node', 'click-add-edge']
       },
       width: graphWidth,
       height: graphHeight,
       defaultNode: {
-        type: 'rect',
+        type: 'flowNode',
         size: [120, 40],
         // ...                 // 节点的其他配置
         // 节点样式配置
@@ -79,13 +80,117 @@ export default {
             fill: '#000' // 节点标签文字颜色
           }
         }
+      },
+      defaultEdge: {
+        shape: 'polyline',
+        style: {
+          endArrow: true,
+          offset: 10, // 拐弯处距离节点最小距离
+          radius: 5, // 拐弯处的圆角弧度，若不设置则为直角
+          lineWidth: 2,
+          stroke: '#87e8de'
+        }
       }
     })
-    this.graph.on('node:click', ev => {
-      const shape = ev.target
-      const node = ev.item
-      console.log(shape)
-      console.log(node)
+    G6.registerBehavior('activate-node', {
+      getDefaultCfg() {
+        return {
+          multiple: true
+        }
+      },
+      getEvents() {
+        return {
+          'node:mouseover': 'onNodeMouseover',
+          'node:mouseleave': 'onNodeMouseleave',
+          'canvas:click': 'onCanvasClick'
+        }
+      },
+      onNodeMouseover(e) {
+        const graph = this.graph
+        const item = e.item
+        console.log(e)
+        this.removeNodesState()
+        if (item.hasState('active')) {
+          graph.setItemState(item, 'active', false)
+          return
+        }
+        // this 上即可取到配置，如果不允许多个active，先取消其他节点的active状态
+        if (!this.multiple) {
+          this.removeNodesState()
+        }
+        // 置点击的节点状态为active
+        graph.setItemState(item, 'active', true)
+      },
+      onNodeMouseleave(e) {
+        const item = e.item
+        this.graph.setItemState(item, 'active', false)
+      },
+      onCanvasClick() {
+        // shouldUpdate可以由用户复写，返回 true 时取消所有节点的active状态
+        // if (this.shouldUpdate(e)) {
+        this.removeNodesState()
+        // }
+      },
+      removeNodesState() {
+        this.graph.findAllByState('node', 'active').forEach(node => {
+          this.graph.setItemState(node, 'active', false)
+        })
+      }
+    })
+    // 封装点击添加边的交互
+    G6.registerBehavior('click-add-edge', {
+      // 设定该自定义行为需要监听的事件及其响应函数
+      getEvents() {
+        return {
+          'node:click': 'onClick', // 监听事件 node:click，响应函数时 onClick
+          mousemove: 'onMousemove', // 监听事件 mousemove，响应函数时 onMousemove
+          'edge:click': 'onEdgeClick' // 监听事件 edge:click，响应函数时 onEdgeClick
+        }
+      },
+      // getEvents 中定义的 'node:click' 的响应函数
+      onClick(ev) {
+        const node = ev.item
+        const graph = this.graph
+        // 鼠标当前点击的节点的位置
+        const point = { x: ev.x, y: ev.y }
+        const model = node.getModel()
+        if (this.addingEdge && this.edge) {
+          graph.updateItem(this.edge, {
+            target: model.id
+          })
+
+          this.edge = null
+          this.addingEdge = false
+        } else {
+          // 在图上新增一条边，结束点是鼠标当前点击的节点的位置
+          this.edge = graph.addItem('edge', {
+            source: model.id,
+            target: point
+          })
+          this.addingEdge = true
+        }
+      },
+      // getEvents 中定义的 mousemove 的响应函数
+      onMousemove(ev) {
+        // 鼠标的当前位置
+        const point = { x: ev.x, y: ev.y }
+        if (this.addingEdge && this.edge) {
+          // 更新边的结束点位置为当前鼠标位置
+          this.graph.updateItem(this.edge, {
+            target: point
+          })
+        }
+      },
+      // getEvents 中定义的 'edge:click' 的响应函数
+      onEdgeClick(ev) {
+        const currentEdge = ev.item
+        // 拖拽过程中，点击会点击到新增的边上
+        if (this.addingEdge && this.edge == currentEdge) {
+          this.graph.removeItem(this.edge)
+          this.edge = null
+          this.addingEdge = false
+        }
+      }
     })
     this.graph.data({
       nodes: this.nodeList,
@@ -124,6 +229,8 @@ export default {
         })
       )
       this.graph.render()
+      let node = this.graph.findById(this.currNode.id)
+      this.graph.setItemState(node, 'active', true)
       // let selectIndex = findIndex(this.list, { id: this.currNode.i })
       // if (selectIndex !== -1) {
       //   this.updateSelectIndex(selectIndex)

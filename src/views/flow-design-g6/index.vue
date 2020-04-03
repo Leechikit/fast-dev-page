@@ -15,23 +15,18 @@
       <div class="main">
         <fd-flow-pane />
       </div>
-      <div class="panel">
-        <fd-config-pane :key="selectIndex" />
-      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import FdFlowPane from '@/components/basic/FdFlowPane'
-import FdNodePane from '@/components/basic/FdNodePane'
-import FdConfigPane from '@/components/basic/FdConfigPane'
+import FdFlowPane from './comp/FdFlowPane'
+import FdNodePane from './comp/FdNodePane'
 
 export default {
-  name: 'FdFlowDesign',
+  name: 'FdFlowDesignG6',
   components: {
-    FdConfigPane,
     FdNodePane,
     FdFlowPane
   },

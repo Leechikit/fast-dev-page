@@ -17,9 +17,9 @@ const routes = [
     component: () => import('@/views/page-design/index.vue')
   },
   {
-    path: '/flow-design',
-    name: 'flow-design',
-    component: () => import('@/views/flow-design/index.vue')
+    path: '/flow-design-g6',
+    name: 'flow-design-g6',
+    component: () => import('@/views/flow-design-g6/index.vue')
   }
 ]
 
