@@ -18,7 +18,7 @@ import G6 from '@antv/g6'
 import { mapGetters, mapMutations } from 'vuex'
 import Utils from '@/helper/utils'
 import bus from '@/helper/bus'
-import '@/helper/flowchart.js'
+import './flowchart.js'
 export default {
   name: 'FdFlowPane',
   computed: {
