@@ -5486,6 +5486,11 @@ lcid@^2.0.0:
   dependencies:
     invert-kv "^2.0.0"
 
+le5le-store@^1.0.2:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/le5le-store/-/le5le-store-1.0.3.tgz#e72b5aaed196d74581ef77b39ecf765b36638e25"
+  integrity sha512-oSWGck0LppcCAf55KrYxmVW+njNDD6V3lskUuQ+WxZkKzumGWy4slyj1XDXV8UkNy65o/QTm9O0QE3Mz7LtZ5g==
+
 leven@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-3.1.0.tgz#77891de834064cccba82ae7842bb6b14a13ed7f2"
@@ -8635,6 +8640,18 @@ toidentifier@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/toidentifier/-/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
   integrity sha512-yaOH/Pk/VEhBWWTlhI+qXxDFXlejDGcQipMlyxda9nthulaxLZUNcUqFxokp0vcYnvteJln5FNQDRrxj3YcbVw==
+
+topology-core@^0.2.5-dev:
+  version "0.2.5-dev"
+  resolved "https://registry.yarnpkg.com/topology-core/-/topology-core-0.2.5-dev.tgz#4f0df76b48dc0af87cca58ceb456debfc51ace6c"
+  integrity sha512-8tq+Z7UDmIejeZDFZWk682E7r/VqKrQ6oQUP0qohq3wHTQzD1m4dhunqRFiWFyJBShHQpIcnbC2zPNrnFB9rcw==
+  dependencies:
+    le5le-store "^1.0.2"
+
+topology-flow-diagram@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/topology-flow-diagram/-/topology-flow-diagram-0.0.3.tgz#fb74800e8c315fd7ff454d6859acaef188a44bdb"
+  integrity sha512-xEdiWp/3XDtqqFf0OPeaAk0qy1Qa79OCTvqNiI49hO2MK4TL0/JYYAbPbQ1I43D9ze8TK7hSfXOjpbTdxJaCwQ==
 
 toposort@^1.0.0:
   version "1.0.7"

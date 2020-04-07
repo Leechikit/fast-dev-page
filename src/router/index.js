@@ -20,6 +20,11 @@ const routes = [
     path: '/flow-design-g6',
     name: 'flow-design-g6',
     component: () => import('@/views/flow-design-g6/index.vue')
+  },
+  {
+    path: '/flow-design',
+    name: 'flow-design',
+    component: () => import('@/views/flow-design/index.vue')
   }
 ]
 

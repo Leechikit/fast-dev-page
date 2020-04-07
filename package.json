@@ -12,6 +12,8 @@
     "core-js": "^3.6.4",
     "element-ui": "^2.13.0",
     "lodash": "^4.17.15",
+    "topology-core": "^0.2.5-dev",
+    "topology-flow-diagram": "^0.0.3",
     "uuid4": "^1.1.4",
     "uuid5": "^1.0.2",
     "vue": "^2.6.11",
