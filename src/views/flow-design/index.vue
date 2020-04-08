@@ -2,11 +2,11 @@
   <div class="fd-flow-design">
     <div class="head">
       <div class="head-center"></div>
-      <!-- <div class="head-right">
-        <el-button size="mini" icon="el-icon-finished" :loading="loading.save"
+      <div class="head-right">
+        <el-button size="mini" icon="el-icon-finished" @click="save"
           >保存</el-button
         >
-      </div> -->
+      </div>
     </div>
     <div class="container">
       <div class="sidebar">
@@ -21,6 +21,7 @@
               @dragstart="onDrag($event, btn)"
             >
               <i :class="`iconfont ${btn.icon}`"></i>
+              <span v-text="btn.data.text"></span>
             </a>
           </div>
         </div>
@@ -36,7 +37,7 @@
 </template>
 <script>
 import { Topology } from 'topology-core'
-import { Tools, canvasRegister } from '@/helper/canvas'
+import { Tools, canvasRegister, getStartAndEndNodes } from '@/helper/flow'
 
 import FlowProps from './comp/FlowProps'
 
@@ -58,7 +59,8 @@ export default {
         locked: false
       },
       data: {
-        nodes: [],
+        lineName: 'polyline',
+        nodes: getStartAndEndNodes(),
         lines: []
       }
     }
@@ -84,6 +86,9 @@ export default {
     this.open()
   },
   methods: {
+    save() {
+      console.log(JSON.stringify(this.canvas.data.pens))
+    },
     async open() {
       this.canvas.open(this.data)
     },
@@ -92,7 +97,6 @@ export default {
     },
 
     onMessage(event, data) {
-      // console.log('onMessage:', event, data)
       switch (event) {
         case 'node':
         case 'addNode':
@@ -119,7 +123,7 @@ export default {
             node: null,
             line: null,
             multi: true,
-            nodes: data.nodes.length > 1 ? data.nodes : null,
+            nodes: data.length > 1 ? data.nodes : null,
             locked: this.getLocked(data)
           }
           break
@@ -253,22 +257,30 @@ export default {
       left: 0;
       bottom: 0;
       top: 0;
-      width: 250px;
+      width: 150px;
       border-right: 1px solid #e3e3e3;
       padding: 15px 0;
+      .title {
+        margin-left: 10px;
+      }
       .buttons {
         padding: 10px 0;
         a {
-          display: inline-block;
-          color: #314659;
-          line-height: 1;
-          width: 40px;
-          height: 40px;
+          display: block;
+          width: 120px;
+          height: 30px;
+          padding: 0 8px;
+          margin: 10px auto;
           text-align: center;
           text-decoration: none !important;
-
+          font-size: 12px;
+          line-height: 30px;
+          background-color: rgba($--color-grey, 0.3);
+          cursor: move;
           .iconfont {
-            font-size: 24px;
+            font-size: 12px;
+            color: $--color-primary;
+            margin-right: 8px;
           }
         }
       }
@@ -276,7 +288,7 @@ export default {
     .main {
       position: absolute;
       top: 0;
-      left: 250px;
+      left: 150px;
       right: 280px;
       bottom: 0;
       background-color: #f5f5f5;
