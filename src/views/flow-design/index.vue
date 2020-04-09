@@ -260,6 +260,7 @@ export default {
       width: 150px;
       border-right: 1px solid #e3e3e3;
       padding: 15px 0;
+      overflow-y: auto;
       .title {
         margin-left: 10px;
       }
