@@ -17,7 +17,7 @@ export function baseIconRect(node) {
 export function baseTextRect(node) {
   var height = node.rect.height - node.paddingTopNum - node.paddingBottomNum
   node.textRect = new Rect(
-    node.rect.x + node.paddingLeftNum + height,
+    node.rect.x + node.paddingLeftNum + height - 5,
     node.rect.y + node.paddingTopNum,
     node.rect.width - node.paddingLeftNum - node.paddingRightNum - height,
     height
