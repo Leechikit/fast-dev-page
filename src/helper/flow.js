@@ -129,7 +129,7 @@ export const Tools = [
           borderRadius: 0.1,
           name: 'baseNode',
           data: {
-            type: 'approve'
+            type: 'Approve'
           }
         }
       },
@@ -148,7 +148,83 @@ export const Tools = [
           borderRadius: 0.1,
           name: 'baseNode',
           data: {
-            type: 'circulate'
+            type: 'Circulate'
+          }
+        }
+      },
+      {
+        name: 'baseNode',
+        icon: 'el-icon-document',
+        data: {
+          text: '经办节点',
+          rect: {
+            width: 120,
+            height: 40
+          },
+          icon: '\ue785',
+          iconFamily: 'element-icons',
+          iconSize: 20,
+          borderRadius: 0.1,
+          name: 'baseNode',
+          data: {
+            type: 'FillSheet'
+          }
+        }
+      },
+      {
+        name: 'baseNode',
+        icon: 'el-icon-collection',
+        data: {
+          text: '汇合节点',
+          rect: {
+            width: 120,
+            height: 40
+          },
+          icon: '\ue75c',
+          iconFamily: 'element-icons',
+          iconSize: 20,
+          borderRadius: 0.1,
+          name: 'baseNode',
+          data: {
+            type: 'Connection'
+          }
+        }
+      },
+      {
+        name: 'baseNode',
+        icon: 'el-icon-s-opportunity',
+        data: {
+          text: '功能节点',
+          rect: {
+            width: 120,
+            height: 40
+          },
+          icon: '\ue7aa',
+          iconFamily: 'element-icons',
+          iconSize: 20,
+          borderRadius: 0.1,
+          name: 'baseNode',
+          data: {
+            type: 'Notify'
+          }
+        }
+      },
+      {
+        name: 'baseNode',
+        icon: 'el-icon-files',
+        data: {
+          text: '子节点',
+          rect: {
+            width: 120,
+            height: 40
+          },
+          icon: '\ue75b',
+          iconFamily: 'element-icons',
+          iconSize: 20,
+          borderRadius: 0.1,
+          name: 'baseNode',
+          data: {
+            type: 'SubInstance'
           }
         }
       }
@@ -665,7 +741,7 @@ export function getStartAndEndNodes() {
       textOffsetY: 0,
       animateType: '',
       data: {
-        type: 'start'
+        type: 'Start'
       },
       zRotate: 0,
       anchors: [
@@ -783,7 +859,7 @@ export function getStartAndEndNodes() {
       textOffsetY: 0,
       animateType: '',
       data: {
-        type: 'end'
+        type: 'End'
       },
       zRotate: 0,
       anchors: [
