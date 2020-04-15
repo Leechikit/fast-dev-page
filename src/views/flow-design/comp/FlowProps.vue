@@ -12,30 +12,22 @@
                 <div class="fd-field-conf">
                   <template v-if="props.node">
                     <el-form-item label="节点编码">
-                      <el-input
-                        @blur="onChange"
-                        v-model.trim="props.node.id"
-                        disabled
-                      />
+                      <el-input v-model.trim="props.node.id" disabled />
                     </el-form-item>
                     <el-form-item label="节点名称">
                       <el-input
-                        @blur="onChange"
+                        @input="onChange"
                         v-model.trim="props.node.text"
                       />
                     </el-form-item>
                   </template>
                   <template v-if="props.line">
                     <el-form-item label="连接线编码">
-                      <el-input
-                        @blur="onChange"
-                        v-model.trim="props.line.id"
-                        disabled
-                      />
+                      <el-input v-model.trim="props.line.id" disabled />
                     </el-form-item>
                     <el-form-item label="连接线名称">
                       <el-input
-                        @blur="onChange"
+                        @input="onChange"
                         v-model.trim="props.line.text"
                       />
                     </el-form-item>

@@ -8,7 +8,7 @@ const routes = [
   {
     path: '/',
     redirect: {
-      name: 'page-design'
+      name: 'flow-design'
     }
   },
   {

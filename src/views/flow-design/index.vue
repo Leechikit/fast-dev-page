@@ -13,16 +13,24 @@
         <div v-for="(item, index) in tools" :key="index">
           <div class="title">{{ item.group }}</div>
           <div class="buttons">
-            <a
+            <el-popover
               v-for="(btn, i) in item.children"
               :key="i"
-              :title="btn.name"
-              :draggable="btn.data"
-              @dragstart="onDrag($event, btn)"
+              placement="right"
+              width="200"
+              trigger="hover"
+              :content="tooltipTexts[btn.data.data.type]"
+              :disabled="!tooltipTexts[btn.data.data.type]"
             >
-              <i :class="`iconfont ${btn.icon}`"></i>
-              <span v-text="btn.data.text"></span>
-            </a>
+              <a
+                slot="reference"
+                :draggable="btn.data"
+                @dragstart="onDrag($event, btn)"
+              >
+                <i :class="`iconfont ${btn.icon}`"></i>
+                <span v-text="btn.data.text"></span>
+              </a>
+            </el-popover>
           </div>
         </div>
       </div>
@@ -37,8 +45,9 @@
 </template>
 <script>
 import { Topology } from 'topology-core'
-import { Tools, canvasRegister, getStartAndEndNodes } from '@/helper/flow'
-
+import { registerNode } from 'topology-core/middles'
+import { Tools, TooltipTexts, getStartAndEndNodes } from '@/helper/flow'
+import { base, baseIconRect, baseTextRect } from './nodes/index'
 import FlowProps from './comp/FlowProps'
 
 export default {
@@ -49,6 +58,7 @@ export default {
   data() {
     return {
       tools: Tools,
+      tooltipTexts: TooltipTexts,
       canvas: {},
       canvasOptions: {},
       props: {
@@ -65,27 +75,24 @@ export default {
       }
     }
   },
-  // computed: {
-  //   event() {
-  //     return this.$store.state.event.event
-  //   }
-  // },
-  // watch: {
-  //   event(curVal) {
-  //     if (this['handle_' + curVal.name]) {
-  //       this['handle_' + curVal.name](curVal.data)
-  //     }
-  //   }
-  // },
   created() {
-    canvasRegister()
+    this.canvasRegister()
   },
   mounted() {
     this.canvasOptions.on = this.onMessage
     this.canvas = new Topology('topology-canvas', this.canvasOptions)
     this.open()
+    setTimeout(() => {
+      this.canvas.render()
+    }, 0)
+    window.addEventListener('resize', () => {
+      this.canvas.resize()
+    })
   },
   methods: {
+    canvasRegister() {
+      registerNode('baseNode', base, null, baseIconRect, baseTextRect)
+    },
     save() {
       console.log(JSON.stringify(this.canvas.data.pens))
     },
@@ -97,6 +104,7 @@ export default {
     },
 
     onMessage(event, data) {
+      console.log(this.data)
       switch (event) {
         case 'node':
         case 'addNode':
@@ -277,11 +285,15 @@ export default {
           font-size: 12px;
           line-height: 30px;
           background-color: rgba($--color-grey, 0.3);
+          border: 1px solid transparent;
           cursor: move;
           .iconfont {
             font-size: 12px;
             color: $--color-primary;
             margin-right: 8px;
+          }
+          &:hover {
+            border: 1px dashed $--color-primary;
           }
         }
       }
