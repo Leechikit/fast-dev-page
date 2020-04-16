@@ -10,29 +10,7 @@
     </div>
     <div class="container">
       <div class="sidebar">
-        <div v-for="(item, index) in tools" :key="index">
-          <div class="title">{{ item.group }}</div>
-          <div class="buttons">
-            <el-popover
-              v-for="(btn, i) in item.children"
-              :key="i"
-              placement="right"
-              width="200"
-              trigger="hover"
-              :content="tooltipTexts[btn.data.data.type]"
-              :disabled="!tooltipTexts[btn.data.data.type]"
-            >
-              <a
-                slot="reference"
-                :draggable="btn.data"
-                @dragstart="onDrag($event, btn)"
-              >
-                <i :class="`iconfont ${btn.icon}`"></i>
-                <span v-text="btn.data.text"></span>
-              </a>
-            </el-popover>
-          </div>
-        </div>
+        <FlowNodes />
       </div>
       <div class="main">
         <div id="topology-canvas" class="full"></div>
@@ -48,11 +26,13 @@ import { Topology } from 'topology-core'
 import { registerNode } from 'topology-core/middles'
 import { Tools, TooltipTexts, getStartAndEndNodes } from '@/helper/flow'
 import { base, baseIconRect, baseTextRect } from './nodes/index'
+import FlowNodes from './comp/FlowNodes'
 import FlowProps from './comp/FlowProps'
 
 export default {
   name: 'FdFlowDesign',
   components: {
+    FlowNodes,
     FlowProps
   },
   data() {
@@ -99,12 +79,7 @@ export default {
     async open() {
       this.canvas.open(this.data)
     },
-    onDrag(event, node) {
-      event.dataTransfer.setData('Text', JSON.stringify(node.data))
-    },
-
     onMessage(event, data) {
-      console.log(this.data)
       switch (event) {
         case 'node':
         case 'addNode':
@@ -269,34 +244,6 @@ export default {
       border-right: 1px solid #e3e3e3;
       padding: 15px 0;
       overflow-y: auto;
-      .title {
-        margin-left: 10px;
-      }
-      .buttons {
-        padding: 10px 0;
-        a {
-          display: block;
-          width: 120px;
-          height: 30px;
-          padding: 0 8px;
-          margin: 10px auto;
-          text-align: center;
-          text-decoration: none !important;
-          font-size: 12px;
-          line-height: 30px;
-          background-color: rgba($--color-grey, 0.3);
-          border: 1px solid transparent;
-          cursor: move;
-          .iconfont {
-            font-size: 12px;
-            color: $--color-primary;
-            margin-right: 8px;
-          }
-          &:hover {
-            border: 1px dashed $--color-primary;
-          }
-        }
-      }
     }
     .main {
       position: absolute;
