@@ -1,7 +1,7 @@
 <template>
   <div class="fd-page-preview">
     <template v-for="item of formItems">
-      <fd-component :key="item.id" :data="item" />
+      <fd-component :key="item.id" :data="item" @click="console.log('hi')" />
     </template>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div class="image" v-if="url">
-    <img :src="url" :alt="name" />
+    <img :src="url" :alt="name" @click="onClick" />
   </div>
 </template>
 <script>
@@ -15,9 +15,26 @@ export default {
       type: String,
       default: ''
     }
+  },
+  created() {
+    console.log(this.$listeners)
+  },
+  methods: {
+    onClick(event) {
+      if (this.$listeners.test) {
+        this.$emit('test', event)
+      } else {
+        console.log('没有绑定')
+      }
+    }
   }
 }
 </script>
 <style lang="scss" scoped>
 @import './main.scss';
+.image {
+  width: 100%;
+  min-height: 20px;
+  background-color: grey;
+}
 </style>

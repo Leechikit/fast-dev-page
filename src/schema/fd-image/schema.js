@@ -32,7 +32,11 @@ const Image = {
   style: {},
   children: null,
   events: {
-    on: {},
+    on: {
+      test: function() {
+        console.log('hi')
+      }
+    },
     nativeOn: {}
   }
 }

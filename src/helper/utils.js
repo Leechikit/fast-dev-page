@@ -1,5 +1,6 @@
 import uuid4 from 'uuid/v4'
 import uuid5 from 'uuid/v5'
+import { cloneDeep } from 'lodash'
 const toString = Object.prototype.toString
 const Utils = {
   types: ['String', 'Function', 'Object'],
@@ -53,11 +54,11 @@ const Utils = {
   },
   getVNodeProps(schema) {
     const { props, configs, attrs, events, className, style } = schema
+    let { on, nativeOn } = events || {}
     let formatProps = props
     for (let key in configs) {
       formatProps[key] = configs[key].value
     }
-    const { on, nativeOn } = events || {}
     return {
       class: className,
       props: formatProps,
@@ -84,7 +85,8 @@ const Utils = {
   },
   deepClone(o) {
     if (!Utils.isObject(o) && !Array.isArray(o)) return o
-    return JSON.parse(JSON.stringify(o))
+    // return JSON.parse(JSON.stringify(o))
+    return cloneDeep(o)
   }
 }
 

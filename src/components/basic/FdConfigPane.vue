@@ -37,6 +37,12 @@
                       :config="item.config"
                     ></config-component>
                   </el-form-item>
+                  <el-form-item label="事件">
+                    <config-component
+                      type="ConfigEvent"
+                      v-model="selectComponent.events"
+                    ></config-component>
+                  </el-form-item>
                 </div>
               </el-form>
             </div>

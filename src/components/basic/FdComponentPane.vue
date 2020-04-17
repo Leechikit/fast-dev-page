@@ -55,6 +55,7 @@ export default {
   },
   methods: {
     onAddComp(row) {
+      console.log(Utils.deepClone(row))
       let comp = Utils.deepClone({
         ...row,
         ...{ id: Utils.guid() }
