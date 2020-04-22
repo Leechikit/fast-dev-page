@@ -56,17 +56,26 @@ const Utils = {
     const { props, configs, attrs, events, className, style } = schema
     let { on, nativeOn } = events || {}
     let formatProps = props
+    let formatOn = {}
     for (let key in configs) {
       formatProps[key] = configs[key].value
+    }
+    for (let key in on) {
+      formatOn[key] = this.createFunc(on[key])
     }
     return {
       class: className,
       props: formatProps,
       attrs,
-      on,
+      on: formatOn,
       nativeOn,
       style
     }
+  },
+  createFunc(funcBody = '') {
+    return typeof funcBody === 'string'
+      ? new Function('event', funcBody)
+      : funcBody
   },
   addClass(elem, name) {
     const classList = elem.className.split(' ')

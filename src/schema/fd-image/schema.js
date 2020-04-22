@@ -7,7 +7,8 @@ const Image = {
     url: {
       name: 'ConfigInput',
       label: 'URL',
-      value: 'http://iph.href.lu/800x200'
+      value:
+        'https://www.baidu.com/img/dongdiqiu_e991bad6a2fe51ffcdaf1db6d5cb0e36.gif'
     },
     alt: {
       name: 'ConfigInput',
@@ -33,9 +34,7 @@ const Image = {
   children: null,
   events: {
     on: {
-      test: function() {
-        console.log('hi')
-      }
+      test: `console.log('hi')`
     },
     nativeOn: {}
   }

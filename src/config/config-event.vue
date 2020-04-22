@@ -9,13 +9,11 @@
         <span class="config-event-name" v-text="funcName"></span>
         <el-button-group class="config-event-buttons">
           <el-button
-            type="primary"
             size="mini"
             icon="el-icon-edit-outline"
             @click.stop="onEdit(funcName)"
           />
           <el-button
-            type="primary"
             size="mini"
             icon="el-icon-delete"
             @click.stop="onDelete(funcName)"
@@ -23,6 +21,23 @@
         </el-button-group>
       </li>
     </ul>
+    <div class="config-event-add">
+      <el-button sise="mini" @click="onAdd">新增事件</el-button>
+    </div>
+    <el-dialog title="提示" :visible.sync="dialogVisible">
+      <el-form>
+        <el-form-item label="事件名">
+          <el-input v-model="event.name"></el-input>
+        </el-form-item>
+        <el-form-item label="事件函数">
+          <el-input v-model="event.func"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="onCancel">取 消</el-button>
+        <el-button type="primary" @click="onSubmit">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -36,7 +51,12 @@ export default {
   },
   data() {
     return {
-      currentValue: this.value
+      currentValue: this.value,
+      dialogVisible: false,
+      event: {
+        name: '',
+        func: ''
+      }
     }
   },
   watch: {
@@ -53,9 +73,30 @@ export default {
     console.log(this.value)
   },
   methods: {
-    onEdit() {},
+    onEdit(funcName) {
+      this.event.name = funcName
+      this.event.func = this.currentValue.on[funcName] + ''
+      this.dialogVisible = true
+    },
+    onCancel() {
+      this.event.name = ''
+      this.event.func = ''
+      this.dialogVisible = false
+    },
     onDelete(funcName) {
+      this.event.name = ''
+      this.event.func = ''
       this.$delete(this.currentValue.on, funcName)
+    },
+    onSubmit() {
+      if (!this.event.name) return
+      this.currentValue.on[this.event.name] = this.event.func
+      this.dialogVisible = false
+    },
+    onAdd() {
+      this.event.name = ''
+      this.event.func = ''
+      this.dialogVisible = true
     }
   }
 }
@@ -65,6 +106,10 @@ export default {
   &-item {
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px solid $--color-grey;
+    &:last-child {
+      border: none;
+    }
   }
   &-name {
     display: block;
@@ -73,9 +118,9 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     padding-left: 10px;
-    border-width: 1px 0 1px 1px;
-    border-style: solid;
-    border-color: $--color-primary;
+    // border-width: 1px 0 1px 1px;
+    // border-style: solid;
+    // border-color: $--color-primary;
     font-size: 14px;
     color: #606266;
     height: 28px;
@@ -83,6 +128,15 @@ export default {
   &-buttons {
     flex-shrink: 0;
     margin-left: -2px;
+    .el-button {
+      border: none;
+    }
+  }
+  &-add {
+    margin-top: 5px;
+    .el-button {
+      width: 100%;
+    }
   }
 }
 </style>
