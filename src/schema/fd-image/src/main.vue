@@ -32,9 +32,4 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import './main.scss';
-.image {
-  width: 100%;
-  min-height: 20px;
-  background-color: grey;
-}
 </style>

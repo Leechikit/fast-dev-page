@@ -33,7 +33,8 @@ const CAPTION_MAP = {
   FORM: '基础组件',
   SHOW: '数据组件',
   TEXT: '文本组件',
-  PAGE: '页面组件'
+  PAGE: '页面组件',
+  LAYOUT: '布局组件'
 }
 export default {
   name: 'FdComponentPane',

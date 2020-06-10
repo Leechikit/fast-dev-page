@@ -22,15 +22,15 @@
         <div
           :class="{
             'fd-dnd-form-item': true,
-            'is-active': selectIndex === index
+            'is-active': selectId === item.id
           }"
           :key="item.id"
           v-for="(item, index) in list"
-          @click="onSelect(index, item)"
+          @click="onSelect(item)"
         >
           <fd-component :key="rerender" :data="item" />
           <div class="fd-dnd-overlay"></div>
-          <el-button-group class="fd-dnd-buttons" v-if="selectIndex === index">
+          <el-button-group class="fd-dnd-buttons" v-if="selectId === item.id">
             <el-button
               type="primary"
               size="mini"
@@ -41,7 +41,7 @@
               type="primary"
               size="mini"
               icon="el-icon-delete"
-              @click.stop="onDelete(index)"
+              @click.stop="onDelete(index, item)"
             />
           </el-button-group>
         </div>
@@ -52,7 +52,7 @@
 <script>
 import draggable from 'vuedraggable'
 // import FdTocPage from './FdTocPage'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 import Utils from '@/helper/utils'
 import FdComponent from './FdComponent'
 // import FdAxisPane from './FdAxisPane'
@@ -64,8 +64,17 @@ export default {
     FdComponent,
     draggable
   },
+  props: {
+    plist: {
+      type: Array
+    },
+    pid: {
+      type: String
+    }
+  },
   computed: {
-    ...mapGetters(['toc', 'selectIndex', 'isShowPage', 'isFormPage'])
+    ...mapState(['count']),
+    ...mapGetters(['toc', 'tocMap', 'selectId', 'isShowPage', 'isFormPage'])
   },
   data() {
     return {
@@ -82,44 +91,48 @@ export default {
     })
   },
   methods: {
-    ...mapMutations([
-      'updateSelectIndex',
-      'addComponent',
-      'delComponent',
-      'updateRenderList'
-    ]),
+    ...mapMutations(['updateSelectComponent', 'incrementCount']),
+    createCompId() {
+      this.incrementCount()
+      const DEFAULT = '0000000'
+      return `F${DEFAULT.slice((this.count + '').length)}${this.count}`
+    },
     onAdd(row) {
-      this.updateSelectIndex(row.newIndex)
-      this.updateRenderList(this.list)
+      const item = this.list[row.newIndex]
+      item.id = this.createCompId()
+      this.tocMap[item.id] = this.pid
+      this.updateSelectComponent(item)
     },
     onMoveEnd(row) {
-      this.updateSelectIndex(row.newIndex)
-      this.updateRenderList(this.list)
+      const item = this.list[row.newIndex]
+      this.updateSelectComponent(item)
     },
     onMoveStart(row) {
-      this.updateSelectIndex(row.oldIndex)
+      const item = this.list[row.oldIndex]
+      this.updateSelectComponent(item)
     },
-    onSelect(index) {
-      this.updateSelectIndex(index)
+    onSelect(item) {
+      this.updateSelectComponent(item)
     },
     onDelete(index) {
-      this.delComponent(index)
-      if (index >= this.list.length) {
-        this.updateSelectIndex(this.list.length - 1)
+      this.list.splice(index, 1)
+      if (this.list.length > 0 && index >= this.list.length) {
+        this.updateSelectComponent(this.list[this.list.length - 1])
       }
     },
-    onCopy(index, row) {
-      this.updateSelectIndex(index + 1)
-      this.addComponent(
-        Utils.deepClone(Object.assign({}, row, { id: Utils.guid() }))
+    onCopy(index, item) {
+      const clone = Utils.deepClone(
+        Object.assign({}, item, { id: this.createCompId() })
       )
+      this.updateSelectComponent(clone)
+      this.list.splice(index + 1, 0, clone)
     }
   },
   watch: {
-    toc: {
+    plist: {
       handler(newVal) {
         if (newVal) {
-          this.list = newVal.children
+          this.list = newVal
           // this.rerender = Date.now()
         }
       },

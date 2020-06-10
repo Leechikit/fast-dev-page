@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import ConfigComponent from '@/config/index.vue'
 // import FdDataOption from './FdInputOption'
 // import FdDataSourceDialog from './FdDataSourceDialog'
@@ -120,13 +120,8 @@ export default {
     // FdDataOption
   },
   computed: {
-    ...mapGetters([
-      'toc',
-      'selectComponent',
-      'isFormPage',
-      'isShowPage',
-      'selectSource'
-    ]),
+    ...mapState(['selectComponent']),
+    ...mapGetters(['toc', 'isFormPage', 'isShowPage', 'selectSource']),
     emptyText() {
       const children = this.toc.children
       return children && children.length

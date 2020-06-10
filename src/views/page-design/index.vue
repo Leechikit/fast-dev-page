@@ -24,7 +24,7 @@
         <fd-component-pane :type="page.pageType" />
       </div>
       <div class="main">
-        <fd-design-pane />
+        <fd-design-pane :plist="toc.children" :pid="toc.id" />
       </div>
       <div class="panel">
         <fd-config-pane :key="selectIndex" />
