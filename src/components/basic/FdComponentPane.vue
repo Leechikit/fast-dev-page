@@ -25,7 +25,7 @@
 <script>
 import draggable from 'vuedraggable'
 import bus from '@/helper/bus'
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import Utils from '@/helper/utils'
 import FdIcon from '@/components/basic/FdIcon'
 
@@ -49,7 +49,7 @@ export default {
     FdIcon
   },
   computed: {
-    ...mapGetters(['defaults']),
+    ...mapState(['defaults']),
     caption() {
       return CAPTION_MAP[this.type]
     }
@@ -57,8 +57,7 @@ export default {
   methods: {
     onAddComp(row) {
       let comp = Utils.deepClone({
-        ...row,
-        ...{ id: Utils.guid() }
+        ...row
       })
       bus.$emit('dragstart', comp)
       return comp

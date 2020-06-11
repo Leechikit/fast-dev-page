@@ -27,7 +27,7 @@
         <fd-design-pane :plist="toc.children" :pid="toc.id" />
       </div>
       <div class="panel">
-        <fd-config-pane :key="selectIndex" />
+        <fd-config-pane :key="selectId" />
       </div>
     </div>
     <entity-preview-drawer v-if="drawer.entity" @on-close="onCloseDrawer" />
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import FdDesignPane from '@/components/basic/FdDesignPane'
 import FdComponentPane from '@/components/basic/FdComponentPane'
 import FdConfigPane from '@/components/basic/FdConfigPane'
@@ -50,7 +50,7 @@ export default {
     EntityPreviewDrawer
   },
   computed: {
-    ...mapGetters(['toc', 'selectIndex', 'isFormPage'])
+    ...mapGetters(['toc', 'selectId', 'isFormPage'])
   },
   data() {
     return {
@@ -76,6 +76,7 @@ export default {
   },
   mounted() {},
   methods: {
+    ...mapMutations(['updateMode']),
     async onAction(type) {
       if (type === 'preview') {
         return this.onOpenDrawer('entity')
@@ -96,9 +97,11 @@ export default {
       }
     },
     onOpenDrawer(name) {
+      this.updateMode('common')
       this.drawer[name] = true
     },
     onCloseDrawer({ name }) {
+      this.updateMode('edit')
       this.drawer[name] = false
     }
   }

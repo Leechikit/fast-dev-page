@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-03-24 15:42:47
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-06-10 14:52:48
+ * @LastEditTime: 2020-06-10 18:15:26
  */
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -14,6 +14,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    mode: 'edit',
     toc: {
       PAGE: {
         id: Utils.namespace('fd.page'),
@@ -33,7 +34,7 @@ export default new Vuex.Store({
       PAGE: {}
     },
     defaults: {
-      PAGE: generate('FdImage')
+      PAGE: generate('FdImage', 'FdCols')
     },
     count: 0,
     selectIndex: -1,
@@ -80,8 +81,8 @@ export default new Vuex.Store({
     incrementCount(state) {
       state.count++
     },
-    updateSelectId(state, id) {
-      state.selectId = id
+    updateMode(state, mode) {
+      state.mode = mode
     }
   },
   getters: {

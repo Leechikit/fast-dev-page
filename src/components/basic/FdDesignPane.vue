@@ -26,10 +26,10 @@
           }"
           :key="item.id"
           v-for="(item, index) in list"
-          @click="onSelect(item)"
+          @click.stop="onSelect(item)"
         >
-          <fd-component :key="rerender" :data="item" />
-          <div class="fd-dnd-overlay"></div>
+          <fd-component :key="rerender" :data="item" :readonly="true" />
+          <!-- <div v-show="!draging" class="fd-dnd-overlay"></div> -->
           <el-button-group class="fd-dnd-buttons" v-if="selectId === item.id">
             <el-button
               type="primary"
@@ -55,6 +55,7 @@ import draggable from 'vuedraggable'
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import Utils from '@/helper/utils'
 import FdComponent from './FdComponent'
+import bus from '@/helper/bus'
 // import FdAxisPane from './FdAxisPane'
 export default {
   name: 'FdDesignPane',
@@ -81,14 +82,17 @@ export default {
       list: [],
       selectedFieldId: 0,
       isRendered: false,
-      rerender: Date.now()
+      rerender: Date.now(),
+      draging: false
     }
   },
   mounted() {
     this.$nextTick(() => {
-      this.list = this.toc.children
+      this.list = this.plist
       this.isRendered = true
     })
+    bus.$on('dragstart', this.dragstart)
+    bus.$on('dragend', this.dragend)
   },
   methods: {
     ...mapMutations(['updateSelectComponent', 'incrementCount']),
@@ -98,7 +102,9 @@ export default {
       return `F${DEFAULT.slice((this.count + '').length)}${this.count}`
     },
     onAdd(row) {
-      const item = this.list[row.newIndex]
+      const index =
+        row.newIndex < this.list.length ? row.newIndex : this.list.length - 1
+      const item = this.list[index]
       item.id = this.createCompId()
       this.tocMap[item.id] = this.pid
       this.updateSelectComponent(item)
@@ -126,6 +132,12 @@ export default {
       )
       this.updateSelectComponent(clone)
       this.list.splice(index + 1, 0, clone)
+    },
+    dragstart() {
+      this.draging = true
+    },
+    dragend() {
+      this.draging = false
     }
   },
   watch: {
@@ -143,7 +155,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .fd-design-pane {
-  height: calc(100vh - 54px);
+  width: 100%;
+  height: 100%;
   overflow-y: auto;
 }
 .fd-dnd-area {
@@ -171,15 +184,9 @@ export default {
   cursor: move;
   position: relative;
   z-index: 10;
-  // padding: 12px 20px 10px;
   display: table;
   width: 100%;
   border-left: 5px solid transparent;
-  // border-right: 5px solid transparent;
-  ::v-deep {
-    .el-form-item__label {
-    }
-  }
   .el-form-item {
     margin-bottom: 0;
   }
@@ -212,9 +219,7 @@ export default {
     border-radius: 0;
   }
 }
-</style>
-<style lang="scss">
-.fd-ghost {
+::v-deep .fd-ghost {
   position: absolute;
   z-index: 1010;
   width: 100% !important;

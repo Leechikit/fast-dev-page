@@ -1,7 +1,14 @@
+<!--
+ * @Description: 
+ * @Autor: Lizijie
+ * @Date: 2020-03-30 16:32:00
+ * @LastEditors: Lizijie
+ * @LastEditTime: 2020-06-10 18:22:34
+-->
 <template>
   <div class="fd-page-preview">
     <template v-for="item of formItems">
-      <fd-component :key="item.id" :data="item" @click="console.log('hi')" />
+      <fd-component :key="item.id" :data="item" />
     </template>
   </div>
 </template>

@@ -52,25 +52,31 @@ const Utils = {
     }
     return result
   },
-  getVNodeProps(schema) {
-    const { props, configs, attrs, events, className, style } = schema
+  getVNodeProps(schema, readonly = false) {
+    const { props, configs, attrs, events, className, style, id } = schema
     let { on, nativeOn } = events || {}
     let formatProps = props
     let formatOn = {}
     for (let key in configs) {
       formatProps[key] = configs[key].value
     }
+    formatProps['id'] = id
     for (let key in on) {
       formatOn[key] = this.createFunc(on[key])
     }
-    return {
+    let result = {
       class: className,
       props: formatProps,
       attrs,
-      on: formatOn,
-      nativeOn,
       style
     }
+    if (readonly === false) {
+      result = Object.assign({}, result, {
+        on: formatOn,
+        nativeOn
+      })
+    }
+    return result
   },
   createFunc(funcBody = '') {
     return typeof funcBody === 'string'
