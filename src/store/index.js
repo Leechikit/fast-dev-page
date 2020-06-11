@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-03-24 15:42:47
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-06-10 18:15:26
+ * @LastEditTime: 2020-06-11 18:34:01
  */
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -34,7 +34,9 @@ export default new Vuex.Store({
       PAGE: {}
     },
     defaults: {
-      PAGE: generate('FdImage', 'FdCols')
+      PAGE: generate('FdImage'),
+      FORM: generate('FdTextbox'),
+      LAYOUT: generate('FdCols')
     },
     count: 0,
     selectIndex: -1,

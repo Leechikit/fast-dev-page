@@ -1,24 +1,28 @@
 <template>
   <div class="sidebar-item-menu">
-    <div class="sidebar-item-menu-head">{{ caption }}</div>
-    <div class="sidebar-item-menu-body">
-      <draggable
-        :sort="false"
-        :clone="onAddComp"
-        :group="{ name: 'form', pull: 'clone', put: false }"
-        :list="defaults[type]"
-        class="fd-dnd-comp-list"
-        @end="dragend"
-      >
-        <div
-          class="fd-dnd-comp-item"
-          :data-key="idx"
-          v-for="(comp, idx) in defaults[type]"
-          :key="idx"
+    <div v-for="(item, $index) in type" :key="$index">
+      <div class="sidebar-item-menu-head">
+        {{ getCaption(item) }}
+      </div>
+      <div class="sidebar-item-menu-body">
+        <draggable
+          :sort="false"
+          :clone="onAddComp"
+          :group="{ name: 'form', pull: 'clone', put: false }"
+          :list="defaults[item]"
+          class="fd-dnd-comp-list"
+          @end="dragend"
         >
-          <span><fd-icon :name="comp.icon" />{{ comp.label }}</span>
-        </div>
-      </draggable>
+          <div
+            class="fd-dnd-comp-item"
+            :data-key="idx"
+            v-for="(comp, idx) in defaults[item]"
+            :key="`${$index}-${idx}`"
+          >
+            <span><fd-icon :name="comp.icon" />{{ comp.label }}</span>
+          </div>
+        </draggable>
+      </div>
     </div>
   </div>
 </template>
@@ -30,7 +34,7 @@ import Utils from '@/helper/utils'
 import FdIcon from '@/components/basic/FdIcon'
 
 const CAPTION_MAP = {
-  FORM: '基础组件',
+  FORM: '表单组件',
   SHOW: '数据组件',
   TEXT: '文本组件',
   PAGE: '页面组件',
@@ -40,8 +44,8 @@ export default {
   name: 'FdComponentPane',
   props: {
     type: {
-      type: String,
-      default: 'PAGE'
+      type: Array,
+      default: () => ['PAGE', 'LAYOUT']
     }
   },
   components: {
@@ -49,10 +53,7 @@ export default {
     FdIcon
   },
   computed: {
-    ...mapState(['defaults']),
-    caption() {
-      return CAPTION_MAP[this.type]
-    }
+    ...mapState(['defaults'])
   },
   methods: {
     onAddComp(row) {
@@ -64,6 +65,9 @@ export default {
     },
     dragend() {
       bus.$emit('dragend')
+    },
+    getCaption(type) {
+      return CAPTION_MAP[type]
     }
   }
 }

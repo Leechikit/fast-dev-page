@@ -21,7 +21,7 @@
     </div>
     <div class="container">
       <div class="sidebar">
-        <fd-component-pane :type="page.pageType" />
+        <fd-component-pane :type="['PAGE', 'LAYOUT', 'FORM']" />
       </div>
       <div class="main">
         <fd-design-pane :plist="toc.children" :pid="toc.id" />

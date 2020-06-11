@@ -19,32 +19,34 @@
         从左侧拖拽来添加数据项
       </div>
       <template v-else>
-        <div
-          :class="{
-            'fd-dnd-form-item': true,
-            'is-active': selectId === item.id
-          }"
-          :key="item.id"
-          v-for="(item, index) in list"
-          @click.stop="onSelect(item)"
-        >
-          <fd-component :key="rerender" :data="item" />
-          <!-- <div v-show="!draging" class="fd-dnd-overlay"></div> -->
-          <el-button-group class="fd-dnd-buttons" v-if="selectId === item.id">
-            <el-button
-              type="primary"
-              size="mini"
-              icon="el-icon-document-copy"
-              @click.stop="onCopy(index, item)"
-            />
-            <el-button
-              type="primary"
-              size="mini"
-              icon="el-icon-delete"
-              @click.stop="onDelete(index, item)"
-            />
-          </el-button-group>
-        </div>
+        <el-form>
+          <div
+            :class="{
+              'fd-dnd-form-item': true,
+              'is-active': selectId === item.id
+            }"
+            :key="item.id"
+            v-for="(item, index) in list"
+            @click.stop="onSelect(item)"
+          >
+            <fd-component :key="rerender" :data="item" />
+            <!-- <div v-show="!draging" class="fd-dnd-overlay"></div> -->
+            <el-button-group class="fd-dnd-buttons" v-if="selectId === item.id">
+              <el-button
+                type="primary"
+                size="mini"
+                icon="el-icon-document-copy"
+                @click.stop="onCopy(index, item)"
+              />
+              <el-button
+                type="primary"
+                size="mini"
+                icon="el-icon-delete"
+                @click.stop="onDelete(index, item)"
+              />
+            </el-button-group>
+          </div>
+        </el-form>
       </template>
     </draggable>
   </div>

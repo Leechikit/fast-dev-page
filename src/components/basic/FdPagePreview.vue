@@ -3,13 +3,15 @@
  * @Autor: Lizijie
  * @Date: 2020-03-30 16:32:00
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-06-10 18:22:34
+ * @LastEditTime: 2020-06-11 18:38:10
 -->
 <template>
   <div class="fd-page-preview">
-    <template v-for="item of formItems">
-      <fd-component :key="item.id" :data="item" />
-    </template>
+    <el-form>
+      <template v-for="item of formItems">
+        <fd-component :key="item.id" :data="item" />
+      </template>
+    </el-form>
   </div>
 </template>
 <script>
