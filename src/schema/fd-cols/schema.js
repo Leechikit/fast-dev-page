@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-06-09 15:10:41
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-06-10 17:40:15
+ * @LastEditTime: 2020-06-11 10:43:47
  */
 const Cols = {
   name: 'FdCols',
@@ -15,6 +15,11 @@ const Cols = {
       name: 'ConfigInput',
       label: '列数',
       value: 2
+    },
+    space: {
+      name: 'ConfigInput',
+      label: '间隔（px）',
+      value: 0
     }
   },
   layout: {

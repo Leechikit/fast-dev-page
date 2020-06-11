@@ -1,6 +1,7 @@
 import uuid4 from 'uuid/v4'
 import uuid5 from 'uuid/v5'
 import { cloneDeep } from 'lodash'
+import store from '@/store'
 const toString = Object.prototype.toString
 const Utils = {
   types: ['String', 'Function', 'Object'],
@@ -52,7 +53,7 @@ const Utils = {
     }
     return result
   },
-  getVNodeProps(schema, readonly = false) {
+  getVNodeProps(schema, readonly = store.state.mode === 'edit') {
     const { props, configs, attrs, events, className, style, id } = schema
     let { on, nativeOn } = events || {}
     let formatProps = props

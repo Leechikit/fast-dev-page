@@ -28,7 +28,7 @@
           v-for="(item, index) in list"
           @click.stop="onSelect(item)"
         >
-          <fd-component :key="rerender" :data="item" :readonly="true" />
+          <fd-component :key="rerender" :data="item" />
           <!-- <div v-show="!draging" class="fd-dnd-overlay"></div> -->
           <el-button-group class="fd-dnd-buttons" v-if="selectId === item.id">
             <el-button
@@ -186,7 +186,7 @@ export default {
   z-index: 10;
   display: table;
   width: 100%;
-  border-left: 5px solid transparent;
+  // border: 1px solid transparent;
   .el-form-item {
     margin-bottom: 0;
   }
@@ -206,7 +206,7 @@ export default {
   }
   &.is-active {
     z-index: 10;
-    border-left: 5px solid $--color-primary;
+    border: 1px dashed $--color-primary;
     background-color: #edf5ff;
   }
 }

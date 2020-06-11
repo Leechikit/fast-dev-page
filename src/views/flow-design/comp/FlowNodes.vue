@@ -59,7 +59,7 @@ export default {
     text-decoration: none !important;
     font-size: 12px;
     line-height: 30px;
-    background-color: rgba($--color-grey, 0.3);
+    background-color: rgba($--color-line, 0.3);
     border: 1px solid transparent;
     cursor: move;
     .iconfont {

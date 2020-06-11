@@ -106,7 +106,7 @@ export default {
   &-item {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid $--color-grey;
+    border-bottom: 1px solid $--color-line;
     &:last-child {
       border: none;
     }

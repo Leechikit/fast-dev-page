@@ -3,11 +3,16 @@
  * @Autor: Lizijie
  * @Date: 2020-06-09 15:10:49
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-06-10 18:29:00
+ * @LastEditTime: 2020-06-11 10:48:11
 -->
 <template>
-  <div class="row">
-    <div class="col" v-for="(item, $index) in this.list" :key="$index">
+  <div class="row" :class="{ 's-edit': mode === 'edit' }">
+    <div
+      class="col"
+      v-for="(item, $index) in list"
+      :key="$index"
+      :style="{ marginRight: $index < list.length - 1 ? space : 0 }"
+    >
       <template v-if="mode === 'edit'">
         <fd-design-pane :plist="item" :pid="id" />
       </template>
@@ -33,6 +38,10 @@ export default {
       type: [String, Number],
       default: 2
     },
+    space: {
+      type: [String, Number],
+      default: 0
+    },
     id: {}
   },
   data() {
@@ -54,19 +63,22 @@ export default {
   },
   methods: {
     setList() {
-      console.log(this.id)
       if (this.id) {
         let pitem = find(this.toc.children, { id: this.id })
-        console.log(pitem)
         if (!(pitem.children instanceof Array)) {
           pitem.children = []
-          for (let i = 0; i < this.cols; i++) {
+        }
+        // 增加列数
+        if (pitem.children.length < this.cols) {
+          for (let i = pitem.children.length; i < this.cols; i++) {
             pitem.children[i] = []
           }
+          // 减少列数
+        } else if (pitem.children.length > this.cols) {
+          pitem.children = pitem.children.slice(0, this.cols)
         }
         this.list = pitem.children
       }
-      console.log(this.list)
     }
   }
 }
@@ -74,12 +86,16 @@ export default {
 <style lang="scss" scoped>
 .row {
   display: flex;
-  border: 10px solid grey;
-  min-height: 60px;
   .col {
     flex: 1;
-    &:not(:last-child) {
-      border-right: 1px solid grey;
+  }
+  &.s-edit {
+    border: 10px solid $--color-grey-4;
+    min-height: 60px;
+    .col {
+      &:not(:last-child) {
+        border-right: 1px solid $--color-grey-4;
+      }
     }
   }
 }
