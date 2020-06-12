@@ -48,8 +48,10 @@
 </template>
 <script>
 import { isEqual } from 'lodash'
+import base from './mixins/base'
 export default {
   name: 'ConfigPadding',
+  mixins: [base],
   props: {
     value: {
       type: Array,

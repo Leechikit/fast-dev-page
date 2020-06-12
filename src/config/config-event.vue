@@ -41,8 +41,10 @@
   </div>
 </template>
 <script>
+import base from './mixins/base'
 export default {
   name: 'ConfigEvent',
+  mixins: [base],
   props: {
     value: {
       type: Object,
@@ -51,22 +53,11 @@ export default {
   },
   data() {
     return {
-      currentValue: this.value,
       dialogVisible: false,
       event: {
         name: '',
         func: ''
       }
-    }
-  },
-  watch: {
-    value() {
-      if (this.value !== this.currentValue) {
-        this.currentValue = this.value
-      }
-    },
-    currentValue() {
-      this.$emit('input', this.currentValue)
     }
   },
   created() {

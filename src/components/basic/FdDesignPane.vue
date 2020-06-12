@@ -1,25 +1,25 @@
 <template>
   <div class="fd-design-pane">
-    <!-- <fd-axis-pane v-if="isShowPage" /> -->
-    <draggable
-      v-if="isRendered"
-      :animation="200"
-      :list="list"
-      :class="{
-        'is-show-page': isShowPage
-      }"
-      ghost-class="fd-ghost"
-      class="fd-dnd-area"
-      @add="onAdd"
-      @end="onMoveEnd"
-      @start="onMoveStart"
-      group="form"
-    >
-      <div class="fd-dnd-placeholder" v-if="list.length === 0">
-        从左侧拖拽来添加数据项
-      </div>
-      <template v-else>
-        <el-form>
+    <el-form>
+      <!-- <fd-axis-pane v-if="isShowPage" /> -->
+      <draggable
+        v-if="isRendered"
+        :animation="200"
+        :list="list"
+        :class="{
+          'is-show-page': isShowPage
+        }"
+        ghost-class="fd-ghost"
+        class="fd-dnd-area"
+        @add="onAdd"
+        @end="onMoveEnd"
+        @start="onMoveStart"
+        group="form"
+      >
+        <div class="fd-dnd-placeholder" v-if="list.length === 0">
+          从左侧拖拽来添加数据项
+        </div>
+        <template v-else>
           <div
             :class="{
               'fd-dnd-form-item': true,
@@ -46,9 +46,9 @@
               />
             </el-button-group>
           </div>
-        </el-form>
-      </template>
-    </draggable>
+        </template>
+      </draggable>
+    </el-form>
   </div>
 </template>
 <script>
@@ -238,5 +238,8 @@ export default {
       display: none;
     }
   }
+}
+::v-deep .el-form {
+  height: 100%;
 }
 </style>

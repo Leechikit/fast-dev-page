@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-06-11 17:52:46
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-06-11 18:38:30
+ * @LastEditTime: 2020-06-12 11:04:14
  */
 const Textbox = {
   name: 'FdTextbox',
@@ -15,6 +15,11 @@ const Textbox = {
       name: 'ConfigInput',
       label: '控件名称',
       value: '单行文本'
+    },
+    labelVisible: {
+      name: 'ConfigSwitch',
+      label: '显示控件名称',
+      value: true
     }
   },
   layout: {
