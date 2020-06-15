@@ -1,14 +1,14 @@
 <template>
-  <div class="fd-design-pane">
+  <div
+    class="fd-design-pane"
+    :class="{ 'g-horizontal': direction === 'horizontal' }"
+  >
     <el-form>
       <!-- <fd-axis-pane v-if="isShowPage" /> -->
       <draggable
         v-if="isRendered"
         :animation="200"
         :list="list"
-        :class="{
-          'is-show-page': isShowPage
-        }"
         ghost-class="fd-ghost"
         class="fd-dnd-area"
         @add="onAdd"
@@ -53,17 +53,12 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
-// import FdTocPage from './FdTocPage'
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 import Utils from '@/helper/utils'
 import FdComponent from './FdComponent'
-import bus from '@/helper/bus'
-// import FdAxisPane from './FdAxisPane'
 export default {
   name: 'FdDesignPane',
   components: {
-    // FdAxisPane,
-    // FdTocPage,
     FdComponent,
     draggable
   },
@@ -71,21 +66,20 @@ export default {
     plist: {
       type: Array
     },
-    pid: {
-      type: String
+    direction: {
+      type: String,
+      default: 'vertical' // horizontal
     }
   },
   computed: {
     ...mapState(['count']),
-    ...mapGetters(['toc', 'tocMap', 'selectId', 'isShowPage', 'isFormPage'])
+    ...mapGetters(['selectId'])
   },
   data() {
     return {
       list: [],
-      selectedFieldId: 0,
       isRendered: false,
-      rerender: Date.now(),
-      draging: false
+      rerender: Date.now()
     }
   },
   mounted() {
@@ -93,22 +87,19 @@ export default {
       this.list = this.plist
       this.isRendered = true
     })
-    bus.$on('dragstart', this.dragstart)
-    bus.$on('dragend', this.dragend)
   },
   methods: {
     ...mapMutations(['updateSelectComponent', 'incrementCount']),
     createCompId() {
       this.incrementCount()
-      const DEFAULT = '0000000'
-      return `F${DEFAULT.slice((this.count + '').length)}${this.count}`
+      const BASE = '0000000'
+      return `F${BASE.slice((this.count + '').length)}${this.count}`
     },
     onAdd(row) {
       const index =
         row.newIndex < this.list.length ? row.newIndex : this.list.length - 1
       const item = this.list[index]
       item.id = this.createCompId()
-      this.tocMap[item.id] = this.pid
       this.updateSelectComponent(item)
     },
     onMoveEnd(row) {
@@ -134,12 +125,6 @@ export default {
       )
       this.updateSelectComponent(clone)
       this.list.splice(index + 1, 0, clone)
-    },
-    dragstart() {
-      this.draging = true
-    },
-    dragend() {
-      this.draging = false
     }
   },
   watch: {
@@ -147,7 +132,6 @@ export default {
       handler(newVal) {
         if (newVal) {
           this.list = newVal
-          // this.rerender = Date.now()
         }
       },
       deep: true
@@ -160,6 +144,18 @@ export default {
   width: 100%;
   height: 100%;
   overflow-y: auto;
+  &.g-horizontal {
+    overflow-x: auto;
+    overflow-y: hidden;
+    .fd-dnd-form-item {
+      max-width: 200px;
+      float: left;
+    }
+    ::v-deep .fd-ghost {
+      float: left;
+      width: 200px;
+    }
+  }
 }
 .fd-dnd-area {
   position: relative;
@@ -189,9 +185,6 @@ export default {
   display: table;
   width: 100%;
   // border: 1px solid transparent;
-  .el-form-item {
-    margin-bottom: 0;
-  }
   .fd-dnd-overlay {
     content: '';
     display: block;
@@ -241,5 +234,8 @@ export default {
 }
 ::v-deep .el-form {
   height: 100%;
+}
+::v-deep .el-input__inner {
+  pointer-events: none;
 }
 </style>

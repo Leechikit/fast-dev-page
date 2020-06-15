@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-03-24 15:42:47
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-06-11 18:34:01
+ * @LastEditTime: 2020-06-12 15:26:32
  */
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -36,11 +36,10 @@ export default new Vuex.Store({
     defaults: {
       PAGE: generate('FdImage'),
       FORM: generate('FdTextbox'),
-      LAYOUT: generate('FdCols')
+      LAYOUT: generate('FdCols', 'FdGridview')
     },
     count: 0,
     selectIndex: -1,
-    selectId: '',
     selectComponent: null,
     pageType: '',
     dataSource: null,
@@ -92,7 +91,6 @@ export default new Vuex.Store({
     tocMap: state => state.tocMap[state.pageType],
     isFormPage: state => state.pageType === 'FORM',
     isShowPage: state => state.pageType === 'SHOW',
-    selectIndex: state => state.selectIndex,
     defaults: state => state.defaults,
     pageType: state => state.pageType,
     dataSource: state => state.dataSource,

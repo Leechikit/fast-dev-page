@@ -24,7 +24,7 @@
         <fd-component-pane :type="['PAGE', 'LAYOUT', 'FORM']" />
       </div>
       <div class="main">
-        <fd-design-pane :plist="toc.children" :pid="toc.id" />
+        <fd-design-pane :plist="toc.children" />
       </div>
       <div class="panel">
         <fd-config-pane :key="selectId" />
@@ -81,7 +81,7 @@ export default {
       if (type === 'preview') {
         return this.onOpenDrawer('entity')
       } else {
-        const { children } = this.toc.children[0]
+        const children = this.toc.children
         if (!children.length) {
           return this.$message.warning(`页面内容不能为空`)
         }

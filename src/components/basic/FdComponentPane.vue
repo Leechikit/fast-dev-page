@@ -90,7 +90,6 @@ export default {
 .fd-dnd-comp-item {
   font-size: 12px;
   width: 50%;
-  line-height: 28px;
   position: relative;
   float: left;
   left: 0;
@@ -101,6 +100,7 @@ export default {
   > span {
     display: flex;
     align-items: center;
+    height: 28px;
     color: #333;
     background: #f4f6f6;
     border: 1px solid #f4f6f6;
