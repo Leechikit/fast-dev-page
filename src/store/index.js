@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-03-24 15:42:47
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-06-12 15:26:32
+ * @LastEditTime: 2020-06-16 16:28:21
  */
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -63,6 +63,8 @@ export default new Vuex.Store({
       state.pageType = payload
     },
     updateSelectComponent(state, payload) {
+      console.log(payload)
+      console.trace()
       state.selectComponent = payload
     },
     addComponent(state, payload) {

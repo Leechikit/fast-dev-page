@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-06-11 17:52:46
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-06-12 17:33:04
+ * @LastEditTime: 2020-06-16 15:37:21
  */
 const Gridview = {
   name: 'FdGridview',
@@ -15,11 +15,6 @@ const Gridview = {
       name: 'ConfigInput',
       label: '控件名称',
       value: '子表'
-    },
-    labelVisible: {
-      name: 'ConfigSwitch',
-      label: '显示控件名称',
-      value: true
     },
     controls: {
       name: 'ConfigControls',

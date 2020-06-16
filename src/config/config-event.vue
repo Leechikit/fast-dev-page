@@ -60,9 +60,6 @@ export default {
       }
     }
   },
-  created() {
-    console.log(this.value)
-  },
   methods: {
     onEdit(funcName) {
       this.event.name = funcName
