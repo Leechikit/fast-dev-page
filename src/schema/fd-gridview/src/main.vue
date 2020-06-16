@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-03-30 14:14:23
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-06-16 16:39:58
+ * @LastEditTime: 2020-06-16 17:04:37
 -->
 <template>
   <div class="gridview">
@@ -14,9 +14,18 @@
         </div>
       </template>
       <template v-else>
-        <div class="row" :style="{ width: controls.length * 200 + 'px' }">
-          <div class="col" v-for="item of controls" :key="item.id">
-            <fd-component :data="item" />
+        <div class="pane">
+          <div class="table" :style="{ width: list.length * 200 + 'px' }">
+            <div class="row">
+              <div class="col" v-for="item of list" :key="item.id">
+                <span v-text="item.configs.label.value"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col" v-for="item of list" :key="item.id">
+                <fd-component :data="item" />
+              </div>
+            </div>
           </div>
         </div>
       </template>
@@ -27,6 +36,7 @@
 import { mapState } from 'vuex'
 import FdDesignPane from '@/components/basic/FdDesignPane'
 import FdComponent from '@/components/basic/FdComponent'
+import Utils from '@/helper/utils'
 export default {
   name: 'FdGridview',
   components: {
@@ -48,12 +58,18 @@ export default {
     }
   },
   data() {
-    return {
-      list: []
-    }
+    return {}
   },
   computed: {
-    ...mapState(['mode'])
+    ...mapState(['mode']),
+    list() {
+      return Utils.deepClone(this.controls).map(item => {
+        if (item.configs.labelVisible) {
+          item.configs.labelVisible.value = false
+        }
+        return item
+      })
+    }
   }
 }
 </script>
@@ -64,13 +80,16 @@ export default {
 .gridview {
   .pane {
     padding: 0 10px;
+    overflow: auto;
+    clear: both;
   }
   .row {
     display: flex;
-    clear: both;
   }
   .col {
     width: 200px;
+    display: flex;
+    align-items: center;
   }
 }
 </style>
