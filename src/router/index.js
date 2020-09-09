@@ -1,3 +1,10 @@
+/*
+ * @Description:
+ * @Autor: Lizijie
+ * @Date: 2020-03-24 15:42:47
+ * @LastEditors: Lizijie
+ * @LastEditTime: 2020-09-09 14:37:04
+ */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store'
@@ -15,6 +22,11 @@ const routes = [
     path: '/page-design',
     name: 'page-design',
     component: () => import('@/views/page-design/index.vue')
+  },
+  {
+    path: '/page-design-gridstack',
+    name: 'page-design-gridstack',
+    component: () => import('@/views/page-design-gridstack/index.vue')
   },
   {
     path: '/flow-design-g6',

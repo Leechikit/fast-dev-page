@@ -11,6 +11,7 @@
     "@antv/g6": "^3.4.4",
     "core-js": "^3.6.4",
     "element-ui": "^2.13.0",
+    "gridstack": "^2.0.0",
     "lodash": "^4.17.15",
     "topology-core": "^0.2.5-dev",
     "topology-flow-diagram": "^0.0.3",

@@ -4466,6 +4466,11 @@ graphlib@^2.1.8:
   dependencies:
     lodash "^4.17.15"
 
+gridstack@^2.0.0:
+  version "2.0.0"
+  resolved "http://npm.ct-km.com/gridstack/-/gridstack-2.0.0.tgz#315aa139611695f71a3b5fe51b295b0e56ef3308"
+  integrity sha1-MVqhOWEWlfcaO1/lGylbDlbvMwg=
+
 gzip-size@^5.0.0:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/gzip-size/-/gzip-size-5.1.1.tgz#cb9bee692f87c0612b232840a873904e4c135274"

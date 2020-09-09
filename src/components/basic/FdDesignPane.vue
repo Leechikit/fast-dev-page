@@ -15,8 +15,7 @@
         ghost-class="fd-ghost"
         class="fd-dnd-area"
         :class="{
-          'fd-dnd-placeholder':
-            !isDraging && (list.length === 0 || direction === 'horizontal'),
+          'fd-dnd-placeholder': !isDraging && list.length === 0,
           'g-horizontal': direction === 'horizontal',
           'g-vertical': direction === 'vertical'
         }"
@@ -169,6 +168,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .fd-design-pane {
+  position: relative;
   width: 100%;
   height: 100%;
   overflow-y: auto;
