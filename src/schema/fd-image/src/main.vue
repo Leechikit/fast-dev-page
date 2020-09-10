@@ -3,11 +3,12 @@
  * @Autor: Lizijie
  * @Date: 2020-03-30 14:14:23
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-06-10 18:04:55
+ * @LastEditTime: 2020-09-10 11:34:37
 -->
 <template>
-  <div class="image" v-if="url">
-    <img :src="url" :alt="name" @click="onClick" />
+  <div class="image">
+    <img v-if="url" :src="url" :alt="name" @click="onClick" />
+    <span v-else>暂无图片</span>
   </div>
 </template>
 <script>

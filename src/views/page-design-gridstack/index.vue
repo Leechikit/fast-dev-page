@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-09 11:15:17
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-09 17:48:23
+ * @LastEditTime: 2020-09-10 17:36:53
 -->
 <template>
   <div class="fd-page-design">
@@ -24,7 +24,7 @@
         <fd-component-pane :type="['PAGE', 'LAYOUT', 'FORM']" />
       </div>
       <div class="main">
-        <fd-design-pane />
+        <fd-design-pane :plist="toc.children" />
       </div>
       <div class="panel">
         <fd-config-pane :key="selectId" />
@@ -119,7 +119,8 @@ export default {
       position: absolute;
       top: 0;
       left: 250px;
-      right: 280px;
+      // right: 280px;
+      right: 0;
       bottom: 0;
       background-color: #f5f5f5;
     }

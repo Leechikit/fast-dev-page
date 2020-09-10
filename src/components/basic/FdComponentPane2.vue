@@ -4,45 +4,27 @@
       <div class="sidebar-item-menu-head">
         {{ getCaption(item) }}
       </div>
-      <!-- <div class="sidebar-item-menu-body">
-        <div
-          class="grid-stack-item"
-          v-for="(item, idx) in serializedData"
-          :key="idx"
-          :data-gs-x="item.x"
-          :data-gs-y="item.y"
-          :data-gs-width="item.width"
-          :data-gs-height="item.height"
-        >
-          <div class="grid-stack-item-content ui-draggable-handle"></div>
-        </div>
-        <draggable
-          :sort="false"
-          :clone="onAddComp"
-          :group="{ name: 'form', pull: 'clone', put: false }"
-          :list="defaults[item]"
-          class="fd-dnd-comp-list"
-          @end="dragend"
-        >
+      <div class="sidebar-item-menu-body">
+        <div class="fd-dnd-comp-list">
           <div
             class="fd-dnd-comp-item"
-            :data-key="idx"
             v-for="(comp, idx) in defaults[item]"
-            :key="`${$index}-${idx}`"
+            :key="idx"
+            :data-type="item"
+            :data-name="comp.name"
           >
             <span><fd-icon :name="comp.icon" />{{ comp.label }}</span>
           </div>
-        </draggable>
-      </div> -->
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script>
-// import { GridStack } from 'gridstack'
 import bus from '@/helper/bus'
 import { mapState } from 'vuex'
 import Utils from '@/helper/utils'
-// import FdIcon from '@/components/basic/FdIcon'
+import FdIcon from '@/components/basic/FdIcon'
 
 const CAPTION_MAP = {
   FORM: '表单组件',
@@ -60,13 +42,10 @@ export default {
     }
   },
   components: {
-    // FdIcon
+    FdIcon
   },
   computed: {
     ...mapState(['defaults'])
-  },
-  created() {
-    console.log(this.defaults)
   },
   methods: {
     onAddComp(row) {
@@ -125,6 +104,13 @@ export default {
   }
   .fd-icon {
     margin: 0 4px 0 8px;
+  }
+  &.ui-draggable-dragging {
+    width: 115px;
+    & > span {
+      height: 50px;
+      line-height: 50px;
+    }
   }
 }
 </style>
