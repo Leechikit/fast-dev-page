@@ -3,13 +3,16 @@
  * @Autor: Lizijie
  * @Date: 2020-09-09 11:15:17
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-10 17:36:24
+ * @LastEditTime: 2020-09-10 18:09:48
 -->
 <template>
   <el-form>
     <div class="grid-stack">
       <div
         class="grid-stack-item"
+        :class="{
+          'is-active': selectId === item.id
+        }"
         v-for="(item, idx) in list"
         :key="idx"
         :id="item.id"
@@ -17,6 +20,7 @@
         :data-gs-y="item.y"
         :data-gs-width="item.width"
         :data-gs-height="item.height"
+        @click.stop="onSelect(item)"
       >
         <div class="grid-stack-item-content ui-draggable-handle">
           <fd-component :key="rerender" :data="item" />
@@ -137,12 +141,23 @@ export default {
           }
         })
       })
+    },
+    onSelect(item) {
+      this.updateSelectComponent(item)
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-.grid-stack-item-content {
-  background-color: red;
+.grid-stack-item {
+  .grid-stack-item-content {
+    background-color: #fff;
+    cursor: move;
+  }
+  &.is-active {
+    .grid-stack-item-content {
+      border: 1px dashed $--color-primary;
+    }
+  }
 }
 </style>
