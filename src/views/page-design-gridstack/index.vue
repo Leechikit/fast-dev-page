@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-09 11:15:17
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-10 17:36:53
+ * @LastEditTime: 2020-09-11 09:02:10
 -->
 <template>
   <div class="fd-page-design">
@@ -119,8 +119,8 @@ export default {
       position: absolute;
       top: 0;
       left: 250px;
-      // right: 280px;
-      right: 0;
+      right: 280px;
+      // right: 0;
       bottom: 0;
       background-color: #f5f5f5;
     }
