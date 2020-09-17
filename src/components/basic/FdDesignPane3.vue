@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-09 11:15:17
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-11 17:57:07
+ * @LastEditTime: 2020-09-17 11:40:52
 -->
 <template>
   <div
@@ -11,9 +11,10 @@
     :class="{
       'fd-dnd-placeholder': !isDraging && list.length === 0
     }"
+    ref="container"
   >
     <el-form>
-      <div class="grid-stack fd-dnd-area">
+      <div class="grid-stack fd-dnd-area" :style="{ minHeight: gridMinHeight }">
         <div
           class="grid-stack-item"
           :class="{
@@ -34,6 +35,7 @@
         </div>
       </div>
     </el-form>
+    <!-- <div class="fd-dnd-background"></div> -->
   </div>
 </template>
 <script>
@@ -54,16 +56,11 @@ export default {
   data() {
     return {
       grid: null,
-      gridMinHeight: '0',
+      gridMinHeight: '100%',
       addLocked: false,
       isDraging: false,
       list: [],
       rerender: Date.now()
-      // list: [
-      //   { id: '1', x: 0, y: 0, width: 2, height: 2 },
-      //   { id: '2', x: 2, y: 3, width: 1, height: 1 },
-      //   { id: '3', x: 1, y: 3, width: 1, height: 1 }
-      // ]
     }
   },
   computed: {
@@ -98,8 +95,10 @@ export default {
       this.grid = GridStack.init({
         minRow: 1,
         margin: 1,
-        float: true,
+        animate: true,
+        cellHeight: '20px',
         disableOneColumnMode: true,
+        acceptWidgets: () => true,
         dragIn: '.sidebar-item-menu .fd-dnd-comp-item',
         dragInOptions: {
           scroll: false,
@@ -112,9 +111,6 @@ export default {
             this.isDraging = false
             return true
           }
-        },
-        acceptWidgets: () => {
-          return true
         }
       })
       this.grid.column(16)
@@ -131,12 +127,12 @@ export default {
           console.log(widget)
           const componentName = widget.el.getAttribute('data-name')
           const componentType = widget.el.getAttribute('data-type')
-          const { x, y, width, height } = widget
+          const { x, y } = widget
           const item = find(this.defaults[componentType], {
             name: componentName
           })
-          // const width = item.layout.defaultWidth / 50
-          // const height = item.layout.defaultHeight / 50
+          const width = Math.ceil(item.layout.defaultWidth / 50)
+          const height = Math.ceil(item.layout.defaultHeight / 20)
           this.grid.removeWidget(widget.el)
           if (this.grid.willItFit(x, y, width, height, true)) {
             const id = this.createCompId()
@@ -155,7 +151,7 @@ export default {
             alert('Not enough free space to place the widget')
           }
         })
-        // this.setGridMinHeight()
+        this.setGridMinHeight()
       })
     },
     gridChangeEvent() {
@@ -167,9 +163,25 @@ export default {
       this.updateSelectComponent(item)
     },
     setGridMinHeight() {
-      const currentRow = this.grid.el.getAttribute('data-gs-current-row') || 0
-      const cellHeight = this.grid.getCellHeight() || 0
-      this.gridMinHeight = (+currentRow + 1) * +cellHeight + 'px'
+      this.$nextTick(() => {
+        const currentRow = this.grid.el.getAttribute('data-gs-current-row') || 0
+        const cellHeight = this.grid.getCellHeight() || 0
+        const containerHeight = this.$refs.container.clientHeight
+        console.log(containerHeight)
+        const thresholdHeight = 100
+        const calculateHeight =
+          +currentRow * +cellHeight + Math.max(thresholdHeight, cellHeight)
+        this.gridMinHeight =
+          calculateHeight > containerHeight - 100
+            ? `${calculateHeight}px`
+            : `${containerHeight}px`
+        console.log(this.gridMinHeight)
+      })
+    },
+    formatList(arrs) {
+      return arrs.map(item => {
+        console.log(item)
+      })
     }
   }
 }
@@ -181,32 +193,43 @@ export default {
   height: 100%;
   overflow-y: auto;
   ::v-deep .el-form {
+    // position: relative;
+    // z-index: 1;
     height: 100%;
   }
 }
 .fd-dnd-area {
   width: 800px;
   margin: 0 auto;
-  min-height: 100%;
 }
 .fd-dnd-placeholder {
-  .fd-dnd-area {
-    &::after {
-      content: '从左侧拖拽来添加数据项';
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: white;
-      color: #999;
-      white-space: nowrap;
-      font-size: 14px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+  &::after {
+    content: '从左侧拖拽来添加数据项';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    color: #999;
+    white-space: nowrap;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+}
+.fd-dnd-background {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 800px;
+  height: 100%;
+  background-color: rgba(#dcdfe6, 0.5);
+  background-image: -webkit-linear-gradient(top, transparent 18px, #fff 20px),
+    -webkit-linear-gradient(left, transparent 48px, #fff 50px);
+  background-size: 50px 20px;
+  transform: translateX(-50%);
 }
 .grid-stack-item {
   .grid-stack-item-content {
@@ -219,7 +242,8 @@ export default {
     }
   }
 }
-
+</style>
+<style lang="scss">
 @mixin grid-stack-items($columns) {
   .grid-stack.grid-stack-#{$columns} {
     > .grid-stack-item {
