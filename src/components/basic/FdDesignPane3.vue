@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-09 11:15:17
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-17 11:40:52
+ * @LastEditTime: 2020-09-17 17:53:14
 -->
 <template>
   <div
@@ -23,6 +23,7 @@
           v-for="(item, idx) in list"
           :key="idx"
           :id="item.id"
+          :data-gs-id="item.id"
           :data-gs-x="item.x"
           :data-gs-y="item.y"
           :data-gs-width="item.width"
@@ -31,6 +32,23 @@
         >
           <div class="grid-stack-item-content ui-draggable-handle">
             <fd-component :key="rerender" :data="item" />
+            <el-button-group
+              class="fd-dnd-buttons"
+              v-if="!isDraging && selectId === item.id"
+            >
+              <el-button
+                type="primary"
+                size="mini"
+                icon="el-icon-document-copy"
+                @click.stop="onCopy(idx, item)"
+              />
+              <el-button
+                type="primary"
+                size="mini"
+                icon="el-icon-delete"
+                @click.stop="onDelete(idx, item)"
+              />
+            </el-button-group>
           </div>
         </div>
       </div>
@@ -122,9 +140,10 @@ export default {
     gridAddEvent() {
       this.grid.on('added', (event, items) => {
         if (this.addLocked) return
+        console.log(items)
         this.addLocked = true
         items.forEach(widget => {
-          console.log(widget)
+          if (widget.el.className.includes('grid-stack-item')) return
           const componentName = widget.el.getAttribute('data-name')
           const componentType = widget.el.getAttribute('data-type')
           const { x, y } = widget
@@ -155,12 +174,42 @@ export default {
       })
     },
     gridChangeEvent() {
-      this.grid.on('change', () => {
+      this.grid.on('change', (event, items) => {
+        items.forEach(widget => {
+          const { width, height, x, y } = widget
+          let component = find(this.list, { id: widget.id })
+          component.width = width
+          component.height = height
+          component.x = x
+          component.y = y
+        })
         this.setGridMinHeight()
       })
     },
     onSelect(item) {
       this.updateSelectComponent(item)
+    },
+    onDelete(index) {
+      this.list.splice(index, 1)
+      if (this.list.length > 0 && index >= this.list.length) {
+        this.updateSelectComponent(this.list[this.list.length - 1])
+      }
+    },
+    onCopy(index, item) {
+      const id = this.createCompId()
+      let { height, x, y } = item
+      let clone = Utils.deepClone(
+        Object.assign({}, item, { id, y: y + height })
+      )
+      // this.list.splice(index + 1, 0, clone)
+      this.list.push(clone)
+      this.updateSelectComponent(clone)
+      console.log(this.list)
+      this.$nextTick(() => {
+        this.grid.makeWidget(id)
+        console.log(x, y + height)
+        this.grid.move(id, x, y + height)
+      })
     },
     setGridMinHeight() {
       this.$nextTick(() => {
@@ -240,6 +289,15 @@ export default {
     .grid-stack-item-content {
       border: 1px dashed $--color-primary;
     }
+  }
+}
+.fd-dnd-buttons {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 11;
+  .el-button {
+    border-radius: 0;
   }
 }
 </style>
