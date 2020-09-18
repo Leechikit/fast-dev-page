@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-09 11:15:17
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-17 17:53:14
+ * @LastEditTime: 2020-09-18 15:14:48
 -->
 <template>
   <div
@@ -32,23 +32,25 @@
         >
           <div class="grid-stack-item-content ui-draggable-handle">
             <fd-component :key="rerender" :data="item" />
-            <el-button-group
-              class="fd-dnd-buttons"
-              v-if="!isDraging && selectId === item.id"
+          </div>
+          <div class="fd-dnd-buttons">
+            <div
+              v-show="expandButtons"
+              class="fd-dnd-buttons-item"
+              @click.stop="onCopy(idx, item)"
             >
-              <el-button
-                type="primary"
-                size="mini"
-                icon="el-icon-document-copy"
-                @click.stop="onCopy(idx, item)"
-              />
-              <el-button
-                type="primary"
-                size="mini"
-                icon="el-icon-delete"
-                @click.stop="onDelete(idx, item)"
-              />
-            </el-button-group>
+              <fd-icon name="copy" />
+            </div>
+            <div
+              v-show="expandButtons"
+              class="fd-dnd-buttons-item"
+              @click.stop="onDelete(idx, item)"
+            >
+              <fd-icon name="delete" />
+            </div>
+            <div class="fd-dnd-buttons-item">
+              <fd-icon name="scale" />
+            </div>
           </div>
         </div>
       </div>
@@ -78,7 +80,8 @@ export default {
       addLocked: false,
       isDraging: false,
       list: [],
-      rerender: Date.now()
+      rerender: Date.now(),
+      expandButtons: true
     }
   },
   computed: {
@@ -114,6 +117,7 @@ export default {
         minRow: 1,
         margin: 1,
         animate: true,
+        alwaysShowResizeHandle: true,
         cellHeight: '20px',
         disableOneColumnMode: true,
         acceptWidgets: () => true,
@@ -140,7 +144,6 @@ export default {
     gridAddEvent() {
       this.grid.on('added', (event, items) => {
         if (this.addLocked) return
-        console.log(items)
         this.addLocked = true
         items.forEach(widget => {
           if (widget.el.className.includes('grid-stack-item')) return
@@ -155,11 +158,9 @@ export default {
           this.grid.removeWidget(widget.el)
           if (this.grid.willItFit(x, y, width, height, true)) {
             const id = this.createCompId()
-            console.log({ x, y, width, height, id })
             const component = Utils.deepClone(
               Object.assign({}, item, { x, y, width, height, id })
             )
-            console.log(this.list)
             this.list.push(component)
             this.updateSelectComponent(component)
             this.$nextTick(() => {
@@ -182,6 +183,7 @@ export default {
           component.height = height
           component.x = x
           component.y = y
+          this.expandButtons = width > 1
         })
         this.setGridMinHeight()
       })
@@ -204,10 +206,8 @@ export default {
       // this.list.splice(index + 1, 0, clone)
       this.list.push(clone)
       this.updateSelectComponent(clone)
-      console.log(this.list)
       this.$nextTick(() => {
         this.grid.makeWidget(id)
-        console.log(x, y + height)
         this.grid.move(id, x, y + height)
       })
     },
@@ -216,7 +216,6 @@ export default {
         const currentRow = this.grid.el.getAttribute('data-gs-current-row') || 0
         const cellHeight = this.grid.getCellHeight() || 0
         const containerHeight = this.$refs.container.clientHeight
-        console.log(containerHeight)
         const thresholdHeight = 100
         const calculateHeight =
           +currentRow * +cellHeight + Math.max(thresholdHeight, cellHeight)
@@ -224,7 +223,6 @@ export default {
           calculateHeight > containerHeight - 100
             ? `${calculateHeight}px`
             : `${containerHeight}px`
-        console.log(this.gridMinHeight)
       })
     },
     formatList(arrs) {
@@ -281,13 +279,24 @@ export default {
   transform: translateX(-50%);
 }
 .grid-stack-item {
+  &.is-active {
+    .grid-stack-item-content {
+      border: 1px dashed $--color-primary;
+    }
+  }
   .grid-stack-item-content {
     background-color: #fff;
     cursor: move;
   }
-  &.is-active {
-    .grid-stack-item-content {
-      border: 1px dashed $--color-primary;
+  ::v-deep .ui-resizable-handle {
+    width: 30px;
+    height: 24px;
+    right: 0 !important;
+    bottom: 0 !important;
+    background-image: none;
+    transform: none;
+    &:hover {
+      background-color: rgba(#fff, 0.2);
     }
   }
 }
@@ -296,8 +305,22 @@ export default {
   bottom: 0;
   right: 0;
   z-index: 11;
-  .el-button {
-    border-radius: 0;
+  &-item {
+    font-size: 12px;
+    color: #fff;
+    background-color: $--color-primary;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+    &:not(:last-child) {
+      border-right: 1px solid rgba(#fff, 0.5);
+    }
+    &:hover {
+      background-color: rgba($--color-primary, 0.8);
+    }
   }
 }
 </style>

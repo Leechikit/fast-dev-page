@@ -1,5 +1,12 @@
+<!--
+ * @Description: 
+ * @Autor: Lizijie
+ * @Date: 2020-03-31 14:42:03
+ * @LastEditors: Lizijie
+ * @LastEditTime: 2020-09-18 10:56:53
+-->
 <template>
-  <svg class="fd-icon" :width="width" :height="height">
+  <svg class="fd-icon">
     <use :xlink:href="iconName" />
   </svg>
 </template>
@@ -10,14 +17,6 @@ export default {
     name: {
       type: String,
       default: ''
-    },
-    width: {
-      type: String,
-      default: '16px'
-    },
-    height: {
-      type: String,
-      default: '16px'
     }
   },
   computed: {
@@ -29,8 +28,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 .fd-icon {
-  display: inline-block;
-  font-size: 0;
-  vertical-align: middle;
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: -0.25em;
+  fill: currentColor;
+  overflow: hidden;
 }
 </style>

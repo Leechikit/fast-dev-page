@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-06-11 17:52:46
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-11 17:13:59
+ * @LastEditTime: 2020-09-16 16:46:58
  */
 const Textbox = {
   name: 'FdTextbox',
@@ -28,7 +28,7 @@ const Textbox = {
     maxWidth: 800,
     maxHeight: 400,
     defaultWidth: 800,
-    defaultHeight: 50
+    defaultHeight: 80
   },
   props: {},
   rules: {
