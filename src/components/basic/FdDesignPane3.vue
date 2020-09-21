@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-09 11:15:17
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-18 15:14:48
+ * @LastEditTime: 2020-09-18 16:17:13
 -->
 <template>
   <div
@@ -33,7 +33,10 @@
           <div class="grid-stack-item-content ui-draggable-handle">
             <fd-component :key="rerender" :data="item" />
           </div>
-          <div class="fd-dnd-buttons">
+          <div
+            class="fd-dnd-buttons"
+            :style="{ right: gridMargin, bottom: gridMargin }"
+          >
             <div
               v-show="expandButtons"
               class="fd-dnd-buttons-item"
@@ -77,6 +80,7 @@ export default {
     return {
       grid: null,
       gridMinHeight: '100%',
+      gridMargin: '1px',
       addLocked: false,
       isDraging: false,
       list: [],
@@ -115,7 +119,7 @@ export default {
     initGridStack() {
       this.grid = GridStack.init({
         minRow: 1,
-        margin: 1,
+        margin: this.gridMargin,
         animate: true,
         alwaysShowResizeHandle: true,
         cellHeight: '20px',
@@ -286,6 +290,7 @@ export default {
   }
   .grid-stack-item-content {
     background-color: #fff;
+    overflow-y: hidden;
     cursor: move;
   }
   ::v-deep .ui-resizable-handle {

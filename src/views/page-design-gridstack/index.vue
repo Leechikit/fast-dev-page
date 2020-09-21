@@ -3,13 +3,20 @@
  * @Autor: Lizijie
  * @Date: 2020-09-09 11:15:17
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-11 09:02:10
+ * @LastEditTime: 2020-09-18 17:50:18
 -->
 <template>
   <div class="fd-page-design">
     <div class="head">
       <div class="head-center"></div>
       <div class="head-right">
+        <el-button
+          size="mini"
+          icon="el-icon-view"
+          :loading="loading.preview"
+          @click="onAction('preview')"
+          >预览</el-button
+        >
         <el-button
           size="mini"
           icon="el-icon-finished"
@@ -30,19 +37,22 @@
         <fd-config-pane :key="selectId" />
       </div>
     </div>
+    <entity-preview-drawer v-if="drawer.entity" @on-close="onCloseDrawer" />
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import FdDesignPane from '@/components/basic/FdDesignPane3'
 import FdComponentPane from '@/components/basic/FdComponentPane2'
 import FdConfigPane from '@/components/basic/FdConfigPane'
+import EntityPreviewDrawer from './dialog/EntityPreviewDrawer'
 export default {
   name: 'PageDesignGridstack',
   components: {
     FdConfigPane,
     FdComponentPane,
-    FdDesignPane
+    FdDesignPane,
+    EntityPreviewDrawer
   },
   data() {
     return {
@@ -51,6 +61,9 @@ export default {
         preview: false,
         save: false,
         publish: false
+      },
+      drawer: {
+        entity: false
       }
     }
   },
@@ -58,7 +71,22 @@ export default {
     ...mapGetters(['toc', 'selectId'])
   },
   methods: {
-    async onAction() {}
+    ...mapMutations(['updateMode']),
+    async onAction(type) {
+      if (type === 'preview') {
+        return this.onOpenDrawer('entity')
+      } else if (type === 'save') {
+        console.log(this.toc.children)
+      }
+    },
+    onOpenDrawer(name) {
+      this.updateMode('common')
+      this.drawer[name] = true
+    },
+    onCloseDrawer({ name }) {
+      this.updateMode('edit')
+      this.drawer[name] = false
+    }
   }
 }
 </script>
