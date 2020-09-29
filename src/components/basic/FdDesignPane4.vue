@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-09 11:15:17
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-29 14:29:39
+ * @LastEditTime: 2020-09-29 16:01:32
 -->
 <template>
   <div
@@ -15,7 +15,7 @@
   >
     <el-form>
       <div class="fd-dnd-area">
-        <GridStack :options="options" @add="addItem">
+        <GridStack :options="options" @add="onAdd">
           <GridStackItem
             v-for="(item, idx) in list"
             :key="item.id"
@@ -32,17 +32,17 @@
                 class="fd-dnd-buttons"
                 :style="{ right: gridMargin, bottom: gridMargin }"
               >
-                <!-- <div
+                <div
                   v-show="expandButtons"
                   class="fd-dnd-buttons-item"
                   @click.stop="onCopy(idx, item)"
                 >
                   <fd-icon name="copy" />
-                </div> -->
+                </div>
                 <div
                   v-show="expandButtons"
                   class="fd-dnd-buttons-item"
-                  @click.stop="remove(() => removeItem(idx))"
+                  @click.stop="remove(() => onDelete(idx))"
                 >
                   <fd-icon name="delete" />
                 </div>
@@ -123,10 +123,22 @@ export default {
     this.$nextTick(() => {
       this.list = this.plist
     })
-    // this.eventHandler()
   },
   methods: {
-    addItem(widget, grid) {
+    ...mapMutations([
+      'updateSelectComponent',
+      'incrementCount',
+      'updateRenderList'
+    ]),
+    createCompId() {
+      this.incrementCount()
+      const BASE = '0000000'
+      return `F${BASE.slice((this.count + '').length)}${this.count}`
+    },
+    onSelect(item) {
+      this.updateSelectComponent(item)
+    },
+    onAdd(widget, grid) {
       if (widget.el.className.includes('grid-stack-item')) return
       const componentName = widget.el.getAttribute('data-name')
       const componentType = widget.el.getAttribute('data-type')
@@ -152,134 +164,20 @@ export default {
         alert('Not enough free space to place the widget')
       }
     },
-    removeItem(idx) {
+    onDelete(idx) {
       this.list.splice(idx, 1)
       this.updateRenderList(this.list)
       const nextIdx = idx >= this.list.length ? this.list.length - 1 : idx
       this.updateSelectComponent(this.list[nextIdx])
     },
-    ...mapMutations([
-      'updateSelectComponent',
-      'incrementCount',
-      'updateRenderList'
-    ]),
-    createCompId() {
-      this.incrementCount()
-      const BASE = '0000000'
-      return `F${BASE.slice((this.count + '').length)}${this.count}`
-    },
-    initGridStack() {
-      this.grid = GridStack.init()
-      this.grid.column(16)
-      this.setGridMinHeight()
-    },
-    eventHandler() {
-      this.gridAddEvent()
-      this.gridChangeEvent()
-    },
-    gridAddEvent() {
-      this.grid.on('added', (event, items) => {
-        if (this.addLocked) return
-        this.addLocked = true
-        items.forEach(widget => {
-          if (widget.el.className.includes('grid-stack-item')) return
-          const componentName = widget.el.getAttribute('data-name')
-          const componentType = widget.el.getAttribute('data-type')
-          const { x, y } = widget
-          const item = find(this.defaults[componentType], {
-            name: componentName
-          })
-          const width = Math.ceil(item.layout.defaultWidth / 50)
-          const height = Math.ceil(item.layout.defaultHeight / 20)
-          this.grid.removeWidget(widget.el)
-          if (this.grid.willItFit(x, y, width, height, true)) {
-            const id = this.createCompId()
-            const component = Utils.deepClone(
-              Object.assign({}, item, { x, y, width, height, id })
-            )
-            this.list.push(component)
-            this.updateSelectComponent(component)
-            this.$nextTick(() => {
-              this.grid.makeWidget(id)
-              this.addLocked = false
-            })
-          } else {
-            alert('Not enough free space to place the widget')
-          }
-        })
-        this.setGridMinHeight()
-      })
-    },
-    gridChangeEvent() {
-      this.grid.on('change', (event, items) => {
-        items.forEach(widget => {
-          const { width, height, x, y } = widget
-          let component = find(this.list, { id: widget.id })
-          if (component) {
-            component.width = width
-            component.height = height
-            component.x = x
-            component.y = y
-            this.expandButtons = width > 1
-          }
-        })
-        this.setGridMinHeight()
-      })
-    },
-    onSelect(item) {
-      this.updateSelectComponent(item)
-    },
-    onDelete(index) {
-      console.log(this.list.length)
-      console.log(index)
-      // const id = this.list[index].id
-      // this.grid.removeWidget(document.querySelector(`#${id}`))
-      this.$nextTick(() => {
-        this.list.splice(index, 1)
-        this.grid.compact()
-        console.log(this.list)
-        this.updateSelectComponent(this.list[this.list.length - 1])
-        this.setGridMinHeight()
-      })
-    },
     onCopy(index, item) {
       const id = this.createCompId()
-      let { height, x, y } = item
+      let { height, y } = item
       let clone = Utils.deepClone(
         Object.assign({}, item, { id, y: y + height })
       )
-      // this.list.splice(index + 1, 0, clone)
-      this.list.push(clone)
+      this.list.splice(index + 1, 0, clone)
       this.updateSelectComponent(clone)
-      this.$nextTick(() => {
-        this.grid.makeWidget(id)
-        this.grid.move(id, x, y + height)
-      })
-    },
-    setGridMinHeight() {
-      if (!this.grid) return
-      this.$nextTick(() => {
-        const currentRow = +this.grid.engine.getRow() || 0
-        const cellHeight = +this.grid.getCellHeight() || 0
-        const cellMargin = +this.grid.getMargin() || 0
-        const thresholdHeight = 100
-        const containerHeight = this.grid.el.parentNode
-          ? this.grid.el.parentNode.clientHeight
-          : this.grid.el.clientHeight
-        const calculateHeight = currentRow * (cellHeight + cellMargin)
-        const gridMinHeight = Math.max(
-          calculateHeight + thresholdHeight,
-          containerHeight
-        )
-        const minRow = Math.ceil(gridMinHeight / (cellHeight + cellMargin))
-        this.grid.el.setAttribute('data-gs-current-row', minRow)
-        this.grid.el.style.minHeight = gridMinHeight + 'px'
-      })
-    },
-    formatList(arrs) {
-      return arrs.map(item => {
-        console.log(item)
-      })
     }
   }
 }
@@ -351,30 +249,4 @@ export default {
     }
   }
 }
-</style>
-<style lang="scss">
-@mixin grid-stack-items($columns) {
-  .grid-stack.grid-stack-#{$columns} {
-    > .grid-stack-item {
-      min-width: 100% / $columns;
-
-      @for $i from 1 through $columns {
-        &[data-gs-width='#{$i}'] {
-          width: (100% / $columns) * $i;
-        }
-        &[data-gs-x='#{$i}'] {
-          left: (100% / $columns) * $i;
-        }
-        &[data-gs-min-width='#{$i}'] {
-          min-width: (100% / $columns) * $i;
-        }
-        &[data-gs-max-width='#{$i}'] {
-          max-width: (100% / $columns) * $i;
-        }
-      }
-    }
-  }
-}
-
-@include grid-stack-items(16);
 </style>

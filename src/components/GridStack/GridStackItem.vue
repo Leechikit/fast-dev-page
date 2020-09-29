@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-29 09:49:02
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-29 11:33:34
+ * @LastEditTime: 2020-09-29 15:49:46
 -->
 <template>
   <div
@@ -37,7 +37,7 @@ export default {
       y: this.y,
       width: this.width,
       height: this.height,
-      autoPosition: true
+      autoPosition: false
     })
   },
   methods: {

@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-29 09:49:02
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-29 11:38:26
+ * @LastEditTime: 2020-09-29 16:01:47
 -->
 <template>
   <div class="grid-stack-container">
@@ -108,3 +108,29 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+@mixin grid-stack-items($columns) {
+  .grid-stack.grid-stack-#{$columns} {
+    > .grid-stack-item {
+      min-width: 100% / $columns;
+
+      @for $i from 1 through $columns {
+        &[data-gs-width='#{$i}'] {
+          width: (100% / $columns) * $i;
+        }
+        &[data-gs-x='#{$i}'] {
+          left: (100% / $columns) * $i;
+        }
+        &[data-gs-min-width='#{$i}'] {
+          min-width: (100% / $columns) * $i;
+        }
+        &[data-gs-max-width='#{$i}'] {
+          max-width: (100% / $columns) * $i;
+        }
+      }
+    }
+  }
+}
+
+@include grid-stack-items(16);
+</style>
