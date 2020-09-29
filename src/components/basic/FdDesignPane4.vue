@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-09 11:15:17
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-29 11:15:21
+ * @LastEditTime: 2020-09-29 14:29:39
 -->
 <template>
   <div
@@ -17,13 +17,14 @@
       <div class="fd-dnd-area">
         <GridStack :options="options" @add="addItem">
           <GridStackItem
-            v-for="item in list"
+            v-for="(item, idx) in list"
             :key="item.id"
             :x.sync="item.x"
             :y.sync="item.y"
             :width.sync="item.width"
             :height.sync="item.height"
             :active="selectId === item.id"
+            @click="onSelect(item)"
           >
             <template v-slot="{ remove }">
               <fd-component :key="rerender" :data="item" />
@@ -41,7 +42,7 @@
                 <div
                   v-show="expandButtons"
                   class="fd-dnd-buttons-item"
-                  @click.stop="remove(() => removeItem(item))"
+                  @click.stop="remove(() => removeItem(idx))"
                 >
                   <fd-icon name="delete" />
                 </div>
@@ -151,11 +152,17 @@ export default {
         alert('Not enough free space to place the widget')
       }
     },
-    removeItem(item) {
-      this.list = this.list.filter(i => i !== item)
-      console.log(this.list)
+    removeItem(idx) {
+      this.list.splice(idx, 1)
+      this.updateRenderList(this.list)
+      const nextIdx = idx >= this.list.length ? this.list.length - 1 : idx
+      this.updateSelectComponent(this.list[nextIdx])
     },
-    ...mapMutations(['updateSelectComponent', 'incrementCount']),
+    ...mapMutations([
+      'updateSelectComponent',
+      'incrementCount',
+      'updateRenderList'
+    ]),
     createCompId() {
       this.incrementCount()
       const BASE = '0000000'
@@ -320,29 +327,6 @@ export default {
     -webkit-linear-gradient(left, transparent 48px, #fff 50px);
   background-size: 50px 20px;
   transform: translateX(-50%);
-}
-.grid-stack-item {
-  &.is-active {
-    .grid-stack-item-content {
-      border: 1px dashed $--color-primary;
-    }
-  }
-  .grid-stack-item-content {
-    background-color: #fff;
-    overflow-y: hidden;
-    cursor: move;
-  }
-  ::v-deep .ui-resizable-handle {
-    width: 30px;
-    height: 24px;
-    right: 0 !important;
-    bottom: 0 !important;
-    background-image: none;
-    transform: none;
-    &:hover {
-      background-color: rgba(#fff, 0.2);
-    }
-  }
 }
 .fd-dnd-buttons {
   position: absolute;

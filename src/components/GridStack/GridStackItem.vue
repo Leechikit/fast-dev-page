@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-29 09:49:02
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-29 11:08:51
+ * @LastEditTime: 2020-09-29 11:33:34
 -->
 <template>
   <div
@@ -11,6 +11,7 @@
     :class="{
       'is-active': active
     }"
+    @click.stop="$emit('click')"
   >
     <div class="grid-stack-item-content">
       <slot :remove="remove"></slot>

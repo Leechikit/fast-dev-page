@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-29 09:49:02
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-29 11:09:26
+ * @LastEditTime: 2020-09-29 11:38:26
 -->
 <template>
   <div class="grid-stack-container">
@@ -77,6 +77,7 @@ export default {
     removeItem(...args) {
       if (this.instance) {
         this.instance.removeWidget(...args)
+        this.setGridMinHeight()
       }
     },
     processItemChange(item) {
