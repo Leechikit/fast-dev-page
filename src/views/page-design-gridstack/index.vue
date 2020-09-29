@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-09 11:15:17
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-18 17:50:18
+ * @LastEditTime: 2020-09-29 10:11:04
 -->
 <template>
   <div class="fd-page-design">
@@ -42,7 +42,7 @@
 </template>
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import FdDesignPane from '@/components/basic/FdDesignPane3'
+import FdDesignPane from '@/components/basic/FdDesignPane4'
 import FdComponentPane from '@/components/basic/FdComponentPane2'
 import FdConfigPane from '@/components/basic/FdConfigPane'
 import EntityPreviewDrawer from './dialog/EntityPreviewDrawer'

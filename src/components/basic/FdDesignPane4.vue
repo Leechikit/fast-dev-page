@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-09 11:15:17
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-28 10:19:54
+ * @LastEditTime: 2020-09-29 11:15:21
 -->
 <template>
   <div
@@ -14,48 +14,44 @@
     ref="container"
   >
     <el-form>
-      <div class="grid-stack fd-dnd-area">
-        <div
-          class="grid-stack-item"
-          :class="{
-            'is-active': selectId === item.id
-          }"
-          v-for="(item, idx) in list"
-          :key="idx"
-          :id="item.id"
-          :data-gs-id="item.id"
-          :data-gs-x="item.x"
-          :data-gs-y="item.y"
-          :data-gs-width="item.width"
-          :data-gs-height="item.height"
-          @click.stop="onSelect(item)"
-        >
-          <div class="grid-stack-item-content ui-draggable-handle">
-            <fd-component :key="rerender" :data="item" />
-          </div>
-          <div
-            class="fd-dnd-buttons"
-            :style="{ right: gridMargin, bottom: gridMargin }"
+      <div class="fd-dnd-area">
+        <GridStack :options="options" @add="addItem">
+          <GridStackItem
+            v-for="item in list"
+            :key="item.id"
+            :x.sync="item.x"
+            :y.sync="item.y"
+            :width.sync="item.width"
+            :height.sync="item.height"
+            :active="selectId === item.id"
           >
-            <div
-              v-show="expandButtons"
-              class="fd-dnd-buttons-item"
-              @click.stop="onCopy(idx, item)"
-            >
-              <fd-icon name="copy" />
-            </div>
-            <div
-              v-show="expandButtons"
-              class="fd-dnd-buttons-item"
-              @click.stop="onDelete(idx, item)"
-            >
-              <fd-icon name="delete" />
-            </div>
-            <div class="fd-dnd-buttons-item">
-              <fd-icon name="scale" />
-            </div>
-          </div>
-        </div>
+            <template v-slot="{ remove }">
+              <fd-component :key="rerender" :data="item" />
+              <div
+                class="fd-dnd-buttons"
+                :style="{ right: gridMargin, bottom: gridMargin }"
+              >
+                <!-- <div
+                  v-show="expandButtons"
+                  class="fd-dnd-buttons-item"
+                  @click.stop="onCopy(idx, item)"
+                >
+                  <fd-icon name="copy" />
+                </div> -->
+                <div
+                  v-show="expandButtons"
+                  class="fd-dnd-buttons-item"
+                  @click.stop="remove(() => removeItem(item))"
+                >
+                  <fd-icon name="delete" />
+                </div>
+                <div class="fd-dnd-buttons-item">
+                  <fd-icon name="scale" />
+                </div>
+              </div>
+            </template>
+          </GridStackItem>
+        </GridStack>
       </div>
     </el-form>
     <!-- <div class="fd-dnd-background"></div> -->
@@ -63,14 +59,14 @@
 </template>
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex'
-import { GridStack } from 'gridstack'
-import 'gridstack/dist/gridstack.css'
+import GridStack from '@/components/GridStack/GridStack.vue'
+import GridStackItem from '@/components/GridStack/GridStackItem.vue'
 import Utils from '@/helper/utils'
 import FdComponent from './FdComponent'
 import { find } from 'lodash'
 export default {
   name: 'PageDesignGridstack',
-  components: { FdComponent },
+  components: { GridStack, GridStackItem, FdComponent },
   props: {
     plist: {
       type: Array
@@ -84,7 +80,28 @@ export default {
       isDraging: false,
       list: [],
       rerender: Date.now(),
-      expandButtons: true
+      expandButtons: true,
+      options: {
+        margin: '1px',
+        animate: true,
+        alwaysShowResizeHandle: true,
+        cellHeight: '20px',
+        disableOneColumnMode: true,
+        acceptWidgets: () => true,
+        dragIn: '.sidebar-item-menu .fd-dnd-comp-item',
+        dragInOptions: {
+          scroll: false,
+          appendTo: 'body',
+          helper: event => {
+            this.isDraging = true
+            return event.currentTarget.cloneNode(true)
+          },
+          revert: () => {
+            this.isDraging = false
+            return true
+          }
+        }
+      }
     }
   },
   computed: {
@@ -105,10 +122,39 @@ export default {
     this.$nextTick(() => {
       this.list = this.plist
     })
-    this.initGridStack()
-    this.eventHandler()
+    // this.eventHandler()
   },
   methods: {
+    addItem(widget, grid) {
+      if (widget.el.className.includes('grid-stack-item')) return
+      const componentName = widget.el.getAttribute('data-name')
+      const componentType = widget.el.getAttribute('data-type')
+      const { x, y } = widget
+      const item = find(this.defaults[componentType], {
+        name: componentName
+      })
+      const width = Math.ceil(item.layout.defaultWidth / 50)
+      const height = Math.ceil(item.layout.defaultHeight / 20)
+      grid.removeWidget(widget.el)
+      if (grid.willItFit(x, y, width, height, true)) {
+        const id = this.createCompId()
+        const component = Utils.deepClone(
+          Object.assign({}, item, { x, y, width, height, id })
+        )
+        this.list.push(component)
+        this.updateSelectComponent(component)
+        this.$nextTick(() => {
+          // grid.makeWidget(id)
+          this.addLocked = false
+        })
+      } else {
+        alert('Not enough free space to place the widget')
+      }
+    },
+    removeItem(item) {
+      this.list = this.list.filter(i => i !== item)
+      console.log(this.list)
+    },
     ...mapMutations(['updateSelectComponent', 'incrementCount']),
     createCompId() {
       this.incrementCount()
@@ -116,27 +162,7 @@ export default {
       return `F${BASE.slice((this.count + '').length)}${this.count}`
     },
     initGridStack() {
-      this.grid = GridStack.init({
-        margin: this.gridMargin,
-        animate: true,
-        alwaysShowResizeHandle: true,
-        cellHeight: '20px',
-        disableOneColumnMode: true,
-        acceptWidgets: () => true,
-        dragIn: '.sidebar-item-menu .fd-dnd-comp-item',
-        dragInOptions: {
-          scroll: false,
-          appendTo: 'body',
-          helper: event => {
-            this.isDraging = true
-            return event.currentTarget.cloneNode(true)
-          },
-          revert: () => {
-            this.isDraging = false
-            return true
-          }
-        }
-      })
+      this.grid = GridStack.init()
       this.grid.column(16)
       this.setGridMinHeight()
     },

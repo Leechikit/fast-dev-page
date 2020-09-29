@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-03-24 15:42:47
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-09 14:37:04
+ * @LastEditTime: 2020-09-18 17:26:13
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -37,6 +37,11 @@ const routes = [
     path: '/flow-design',
     name: 'flow-design',
     component: () => import('@/views/flow-design/index.vue')
+  },
+  {
+    path: '/test',
+    name: 'test',
+    component: () => import('@/views/test')
   }
 ]
 
