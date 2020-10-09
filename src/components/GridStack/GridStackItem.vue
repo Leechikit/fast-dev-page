@@ -3,13 +3,14 @@
  * @Autor: Lizijie
  * @Date: 2020-09-29 09:49:02
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-29 15:49:46
+ * @LastEditTime: 2020-10-09 16:37:33
 -->
 <template>
   <div
     class="grid-stack-item"
     :class="{
-      'is-active': active
+      'is-active': isActive,
+      'is-static': isStatic
     }"
     @click.stop="$emit('click')"
   >
@@ -26,7 +27,8 @@ export default {
     y: Number,
     width: Number,
     height: Number,
-    active: Boolean
+    isActive: Boolean,
+    isStatic: Boolean
   },
   inject: ['addItem', 'removeItem'],
   mounted() {
@@ -57,26 +59,32 @@ export default {
 </script>
 <style lang="scss" scoped>
 .grid-stack-item {
-  &.is-active {
-    .grid-stack-item-content {
-      border: 1px dashed $--color-primary;
-    }
-  }
   .grid-stack-item-content {
     background-color: #fff;
     overflow-y: hidden;
     cursor: move;
   }
-  ::v-deep .ui-resizable-handle {
-    width: 30px;
-    height: 24px;
-    right: 0 !important;
-    bottom: 0 !important;
-    background-image: none;
-    transform: none;
-    &:hover {
-      background-color: rgba(#fff, 0.2);
+  &.is-active {
+    .grid-stack-item-content {
+      border: 1px dashed $--color-primary;
     }
   }
+  &.is-static {
+    .grid-stack-item-content {
+      background-color: transparent;
+      cursor: initial;
+    }
+  }
+  // ::v-deep .ui-resizable-handle {
+  //   width: 30px;
+  //   height: 24px;
+  //   right: 0 !important;
+  //   bottom: 0 !important;
+  //   background-image: none;
+  //   transform: none;
+  //   &:hover {
+  //     background-color: rgba(#fff, 0.2);
+  //   }
+  // }
 }
 </style>

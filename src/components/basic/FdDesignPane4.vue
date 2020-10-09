@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-09 11:15:17
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-29 16:01:32
+ * @LastEditTime: 2020-10-09 16:51:01
 -->
 <template>
   <div
@@ -23,32 +23,29 @@
             :y.sync="item.y"
             :width.sync="item.width"
             :height.sync="item.height"
-            :active="selectId === item.id"
+            :isActive="selectId === item.id"
             @click="onSelect(item)"
           >
             <template v-slot="{ remove }">
               <fd-component :key="rerender" :data="item" />
-              <div
-                class="fd-dnd-buttons"
-                :style="{ right: gridMargin, bottom: gridMargin }"
-              >
+              <div class="fd-dnd-buttons">
                 <div
                   v-show="expandButtons"
-                  class="fd-dnd-buttons-item"
+                  class="fd-dnd-buttons-item fd-dnd-buttons-copy"
                   @click.stop="onCopy(idx, item)"
                 >
                   <fd-icon name="copy" />
                 </div>
                 <div
                   v-show="expandButtons"
-                  class="fd-dnd-buttons-item"
+                  class="fd-dnd-buttons-item fd-dnd-buttons-delete"
                   @click.stop="remove(() => onDelete(idx))"
                 >
                   <fd-icon name="delete" />
                 </div>
-                <div class="fd-dnd-buttons-item">
+                <!-- <div class="fd-dnd-buttons-item">
                   <fd-icon name="scale" />
-                </div>
+                </div> -->
               </div>
             </template>
           </GridStackItem>
@@ -76,18 +73,14 @@ export default {
   data() {
     return {
       grid: null,
-      gridMargin: '1px',
       addLocked: false,
       isDraging: false,
       list: [],
       rerender: Date.now(),
       expandButtons: true,
       options: {
-        margin: '1px',
         animate: true,
-        alwaysShowResizeHandle: true,
-        cellHeight: '20px',
-        disableOneColumnMode: true,
+        // alwaysShowResizeHandle: true,
         acceptWidgets: () => true,
         dragIn: '.sidebar-item-menu .fd-dnd-comp-item',
         dragInOptions: {
@@ -228,24 +221,31 @@ export default {
 }
 .fd-dnd-buttons {
   position: absolute;
-  bottom: 0;
-  right: 0;
+  top: 5px;
+  right: 5px;
   z-index: 11;
   &-item {
     font-size: 12px;
     color: #fff;
-    background-color: $--color-primary;
-    width: 30px;
-    height: 24px;
-    line-height: 24px;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    border-radius: 4px;
     cursor: pointer;
     text-align: center;
     display: inline-block;
-    &:not(:last-child) {
-      border-right: 1px solid rgba(#fff, 0.5);
-    }
+    margin-left: 5px;
+  }
+  &-copy {
+    background-color: $--color-primary;
     &:hover {
       background-color: rgba($--color-primary, 0.8);
+    }
+  }
+  &-delete {
+    background-color: $--color-red;
+    &:hover {
+      background-color: rgba($--color-red, 0.8);
     }
   }
 }

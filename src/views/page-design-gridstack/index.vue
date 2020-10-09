@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-09 11:15:17
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-10-09 11:24:17
+ * @LastEditTime: 2020-10-09 16:46:44
 -->
 <template>
   <div class="fd-page-design">
@@ -28,7 +28,7 @@
     </div>
     <div class="container">
       <div class="sidebar">
-        <fd-component-pane :type="['PAGE', 'LAYOUT', 'FORM']" />
+        <fd-component-pane :type="['PAGE', 'FORM']" />
       </div>
       <div class="main">
         <fd-design-pane :plist="toc.children" />

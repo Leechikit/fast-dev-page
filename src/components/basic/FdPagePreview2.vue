@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-03-30 16:32:00
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-10-09 14:19:06
+ * @LastEditTime: 2020-10-09 16:11:42
 -->
 <template>
   <div class="fd-page-preview">
@@ -17,6 +17,7 @@
             :y.sync="item.y"
             :width.sync="item.width"
             :height.sync="item.height"
+            :isStatic="true"
           >
             <fd-component :data="item" />
           </GridStackItem>
@@ -55,9 +56,6 @@ export default {
       form: {},
       formItems: [],
       options: {
-        margin: '1px',
-        cellHeight: '20px',
-        disableOneColumnMode: true,
         staticGrid: true
       }
     }

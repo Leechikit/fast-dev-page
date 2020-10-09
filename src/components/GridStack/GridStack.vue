@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-29 09:49:02
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-10-09 14:29:40
+ * @LastEditTime: 2020-10-09 15:58:02
 -->
 <template>
   <div class="grid-stack-container">
@@ -16,6 +16,7 @@
 <script>
 import GridStack from 'gridstack/dist/gridstack.all.js'
 import 'gridstack/dist/gridstack.css'
+import { gridstackOptions } from '@/helper/gridstack'
 
 export default {
   name: 'GridStack',
@@ -33,7 +34,8 @@ export default {
   data() {
     return {
       instance: null,
-      pre: []
+      pre: [],
+      mergeOptions: { ...gridstackOptions, ...this.options }
     }
   },
   provide() {
@@ -44,7 +46,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.instance = GridStack.init(this.options, this.$refs.gs)
+      this.instance = GridStack.init(this.mergeOptions, this.$refs.gs)
       this.instance.column(16)
       this.setGridMinHeight()
       this.instance.on('change', (e, items) => {
