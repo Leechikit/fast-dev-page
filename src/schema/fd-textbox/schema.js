@@ -3,13 +3,21 @@
  * @Autor: Lizijie
  * @Date: 2020-06-11 17:52:46
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-16 16:46:58
+ * @LastEditTime: 2020-10-09 10:29:18
  */
 const Textbox = {
   name: 'FdTextbox',
   label: '单行文本组件',
   icon: 'textbox',
   tips: '',
+  component: {
+    class: 'fd-textbox',
+    props: {},
+    style: {},
+    children: null,
+    on: {},
+    nativeOn: {}
+  },
   configs: {
     label: {
       name: 'ConfigInput',
@@ -30,17 +38,9 @@ const Textbox = {
     defaultWidth: 800,
     defaultHeight: 80
   },
-  props: {},
   rules: {
     required: false,
     message: ''
-  },
-  className: {},
-  style: {},
-  children: null,
-  events: {
-    on: {},
-    nativeOn: {}
   }
 }
 

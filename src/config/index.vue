@@ -1,3 +1,10 @@
+<!--
+ * @Description: 
+ * @Autor: Lizijie
+ * @Date: 2020-03-30 15:01:40
+ * @LastEditors: Lizijie
+ * @LastEditTime: 2020-10-09 10:43:30
+-->
 <template>
   <div>
     <component :is="type" v-model="currentValue" :config="config"></component>

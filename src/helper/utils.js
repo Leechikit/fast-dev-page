@@ -54,8 +54,8 @@ const Utils = {
     return result
   },
   getVNodeProps(schema, readonly = store.state.mode === 'edit') {
-    const { props, configs, attrs, events, className, style, id } = schema
-    let { on, nativeOn } = events || {}
+    const { id, name, component, configs } = schema
+    const { props, class: className, attrs, style, on, nativeOn } = component
     let formatProps = props
     let formatOn = {}
     for (let key in configs) {
@@ -66,6 +66,7 @@ const Utils = {
       formatOn[key] = this.createFunc(on[key])
     }
     let result = {
+      name,
       class: className,
       props: formatProps,
       attrs,

@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-03-24 17:17:07
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-22 10:49:31
+ * @LastEditTime: 2020-10-09 11:24:04
  */
 import Vue from 'vue'
 const install = function(name, component) {

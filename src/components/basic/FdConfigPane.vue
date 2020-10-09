@@ -40,7 +40,7 @@
                   <el-form-item label="事件">
                     <config-component
                       type="ConfigEvent"
-                      v-model="selectComponent.events"
+                      v-model="selectComponent.on"
                     ></config-component>
                   </el-form-item>
                 </div>

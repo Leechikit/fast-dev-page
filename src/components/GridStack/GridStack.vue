@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-29 09:49:02
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-29 16:01:47
+ * @LastEditTime: 2020-10-09 14:29:40
 -->
 <template>
   <div class="grid-stack-container">
@@ -62,7 +62,7 @@ export default {
       })
       while (this.pre.length > 0) {
         const args = this.pre.shift()
-        this.addItem(...args)
+        this.addItem(args)
       }
     })
   },
