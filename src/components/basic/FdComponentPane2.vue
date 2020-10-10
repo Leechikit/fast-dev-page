@@ -13,7 +13,9 @@
             :data-type="item"
             :data-name="comp.name"
           >
-            <span><fd-icon :name="comp.icon" />{{ comp.label }}</span>
+            <span class="grid-stack-item-content"
+              ><fd-icon :name="comp.icon" />{{ comp.label }}</span
+            >
           </div>
         </div>
       </div>
