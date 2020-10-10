@@ -40,7 +40,7 @@
                   <el-form-item label="事件">
                     <config-component
                       type="ConfigEvent"
-                      v-model="selectComponent.on"
+                      v-model="selectComponent.component.on"
                     ></config-component>
                   </el-form-item>
                 </div>
@@ -119,16 +119,6 @@ export default {
     // FdDataSourceDialog,
     // FdDataOption
   },
-  computed: {
-    ...mapState(['selectComponent']),
-    ...mapGetters(['toc', 'isFormPage', 'isShowPage', 'selectSource']),
-    emptyText() {
-      const children = this.toc.children
-      return children && children.length
-        ? '请选择一个组件来设置属性'
-        : '请添加组件'
-    }
-  },
   data() {
     return {
       isActiveTab: 'field',
@@ -140,6 +130,16 @@ export default {
       dialog: {
         dataSource: false
       }
+    }
+  },
+  computed: {
+    ...mapState(['selectComponent']),
+    ...mapGetters(['toc', 'isFormPage', 'isShowPage', 'selectSource']),
+    emptyText() {
+      const children = this.toc.children
+      return children && children.length
+        ? '请选择一个组件来设置属性'
+        : '请添加组件'
     }
   },
   mounted() {

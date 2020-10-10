@@ -63,7 +63,7 @@ const Utils = {
     }
     formatProps['id'] = id
     for (let key in on) {
-      formatOn[key] = this.createFunc(on[key])
+      formatOn[key] = this.createFunc(on[key], name, key)
     }
     let result = {
       name,
@@ -80,10 +80,19 @@ const Utils = {
     }
     return result
   },
-  createFunc(funcBody = '') {
-    return typeof funcBody === 'string'
-      ? new Function('event', funcBody)
-      : funcBody
+  createFunc(funcBody = '', compName, funcName) {
+    if (typeof funcBody === 'string') {
+      try {
+        return new Function('event', funcBody)
+      } catch (error) {
+        throw new ToastError(
+          `Invalid handler for event "${funcName}" at component "${compName}": ${error}`
+        )
+      }
+    }
+    // return typeof funcBody === 'string'
+    //   ? new Function('event', funcBody)
+    //   : funcBody
   },
   addClass(elem, name) {
     const classList = elem.className.split(' ')
