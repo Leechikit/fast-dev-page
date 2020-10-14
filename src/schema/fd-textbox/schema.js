@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-06-11 17:52:46
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-10-09 10:29:18
+ * @LastEditTime: 2020-10-12 10:25:53
  */
 const Textbox = {
   name: 'FdTextbox',
@@ -28,6 +28,11 @@ const Textbox = {
       name: 'ConfigSwitch',
       label: '显示控件名称',
       value: true
+    },
+    required: {
+      name: 'ConfigSwitch',
+      label: '必填',
+      value: false
     }
   },
   layout: {
