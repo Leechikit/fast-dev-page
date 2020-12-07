@@ -3,7 +3,7 @@
     <ul>
       <li
         class="config-event-item"
-        v-for="(func, funcName) in currentValue.on"
+        v-for="(func, funcName) in currentValue"
         :key="funcName"
       >
         <span class="config-event-name" v-text="funcName"></span>
@@ -63,7 +63,7 @@ export default {
   methods: {
     onEdit(funcName) {
       this.event.name = funcName
-      this.event.func = this.currentValue.on[funcName] + ''
+      this.event.func = this.currentValue[funcName] + ''
       this.dialogVisible = true
     },
     onCancel() {
@@ -74,11 +74,11 @@ export default {
     onDelete(funcName) {
       this.event.name = ''
       this.event.func = ''
-      this.$delete(this.currentValue.on, funcName)
+      this.$delete(this.currentValue, funcName)
     },
     onSubmit() {
       if (!this.event.name) return
-      this.currentValue.on[this.event.name] = this.event.func
+      this.currentValue[this.event.name] = this.event.func
       this.dialogVisible = false
     },
     onAdd() {

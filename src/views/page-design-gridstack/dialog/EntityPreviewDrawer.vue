@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-18 17:43:42
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-18 18:04:15
+ * @LastEditTime: 2020-10-09 11:29:22
 -->
 <template>
   <el-drawer
@@ -64,7 +64,7 @@ export default {
 }
 .fd-preview {
   position: relative;
-  width: 800px;
+  width: 840px;
   margin: 0 auto;
   border-top: 20px solid $--color-primary;
   height: 100%;

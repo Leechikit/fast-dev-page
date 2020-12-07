@@ -3,12 +3,12 @@
  * @Autor: Lizijie
  * @Date: 2020-03-30 14:14:23
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-06-12 11:06:01
+ * @LastEditTime: 2020-10-12 10:28:21
 -->
 <template>
   <div class="textbox">
     <template v-if="labelVisible">
-      <el-form-item :label="label">
+      <el-form-item :label="label" :required="required">
         <el-input v-model="value"></el-input>
       </el-form-item>
     </template>
@@ -28,7 +28,8 @@ export default {
     labelVisible: {
       type: Boolean,
       default: true
-    }
+    },
+    required: Boolean
   },
   data() {
     return {

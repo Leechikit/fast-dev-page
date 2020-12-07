@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-03-24 15:42:47
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-06-16 16:51:05
+ * @LastEditTime: 2020-10-13 10:20:02
  */
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -36,7 +36,7 @@ export default new Vuex.Store({
     defaults: {
       PAGE: generate('FdImage'),
       FORM: generate('FdTextbox'),
-      LAYOUT: generate('FdCols', 'FdGridview')
+      LAYOUT: generate('FdCols', 'FdGridview', 'FdExpand')
     },
     count: 0,
     selectIndex: -1,

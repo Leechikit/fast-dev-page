@@ -54,8 +54,8 @@ const Utils = {
     return result
   },
   getVNodeProps(schema, readonly = store.state.mode === 'edit') {
-    const { props, configs, attrs, events, className, style, id } = schema
-    let { on, nativeOn } = events || {}
+    const { id, name, component, configs } = schema
+    const { props, class: className, attrs, style, on, nativeOn } = component
     let formatProps = props
     let formatOn = {}
     for (let key in configs) {
@@ -63,9 +63,11 @@ const Utils = {
     }
     formatProps['id'] = id
     for (let key in on) {
-      formatOn[key] = this.createFunc(on[key])
+      formatOn[key] = this.createFunc(on[key], name, key)
     }
+    formatProps['data'] = schema.component
     let result = {
+      name,
       class: className,
       props: formatProps,
       attrs,
@@ -79,10 +81,19 @@ const Utils = {
     }
     return result
   },
-  createFunc(funcBody = '') {
-    return typeof funcBody === 'string'
-      ? new Function('event', funcBody)
-      : funcBody
+  createFunc(funcBody = '', compName, funcName) {
+    if (typeof funcBody === 'string') {
+      try {
+        return new Function('event', funcBody)
+      } catch (error) {
+        throw new ToastError(
+          `Invalid handler for event "${funcName}" at component "${compName}": ${error}`
+        )
+      }
+    }
+    // return typeof funcBody === 'string'
+    //   ? new Function('event', funcBody)
+    //   : funcBody
   },
   addClass(elem, name) {
     const classList = elem.className.split(' ')

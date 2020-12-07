@@ -1,8 +1,25 @@
+/*
+ * @Description:
+ * @Autor: Lizijie
+ * @Date: 2020-03-30 14:14:23
+ * @LastEditors: Lizijie
+ * @LastEditTime: 2020-11-30 18:20:24
+ */
 const Image = {
   name: 'FdImage',
   label: '图片组件',
   icon: 'image',
   tips: '',
+  component: {
+    class: 'fd-image',
+    props: {},
+    style: {},
+    children: null,
+    on: {
+      click: `alert('hi')`
+    },
+    nativeOn: {}
+  },
   configs: {
     url: {
       name: 'ConfigInput',
@@ -24,19 +41,9 @@ const Image = {
     defaultWidth: 800,
     defaultHeight: 200
   },
-  props: {},
   rules: {
     required: false,
     message: ''
-  },
-  className: {},
-  style: {},
-  children: null,
-  events: {
-    on: {
-      test: `console.log('hi')`
-    },
-    nativeOn: {}
   }
 }
 

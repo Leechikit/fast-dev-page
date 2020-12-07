@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-09-09 11:15:17
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-18 16:17:13
+ * @LastEditTime: 2020-09-28 10:19:54
 -->
 <template>
   <div
@@ -14,7 +14,7 @@
     ref="container"
   >
     <el-form>
-      <div class="grid-stack fd-dnd-area" :style="{ minHeight: gridMinHeight }">
+      <div class="grid-stack fd-dnd-area">
         <div
           class="grid-stack-item"
           :class="{
@@ -79,7 +79,6 @@ export default {
   data() {
     return {
       grid: null,
-      gridMinHeight: '100%',
       gridMargin: '1px',
       addLocked: false,
       isDraging: false,
@@ -118,7 +117,6 @@ export default {
     },
     initGridStack() {
       this.grid = GridStack.init({
-        minRow: 1,
         margin: this.gridMargin,
         animate: true,
         alwaysShowResizeHandle: true,
@@ -140,6 +138,7 @@ export default {
         }
       })
       this.grid.column(16)
+      this.setGridMinHeight()
     },
     eventHandler() {
       this.gridAddEvent()
@@ -183,11 +182,13 @@ export default {
         items.forEach(widget => {
           const { width, height, x, y } = widget
           let component = find(this.list, { id: widget.id })
-          component.width = width
-          component.height = height
-          component.x = x
-          component.y = y
-          this.expandButtons = width > 1
+          if (component) {
+            component.width = width
+            component.height = height
+            component.x = x
+            component.y = y
+            this.expandButtons = width > 1
+          }
         })
         this.setGridMinHeight()
       })
@@ -196,10 +197,17 @@ export default {
       this.updateSelectComponent(item)
     },
     onDelete(index) {
-      this.list.splice(index, 1)
-      if (this.list.length > 0 && index >= this.list.length) {
+      console.log(this.list.length)
+      console.log(index)
+      // const id = this.list[index].id
+      // this.grid.removeWidget(document.querySelector(`#${id}`))
+      this.$nextTick(() => {
+        this.list.splice(index, 1)
+        this.grid.compact()
+        console.log(this.list)
         this.updateSelectComponent(this.list[this.list.length - 1])
-      }
+        this.setGridMinHeight()
+      })
     },
     onCopy(index, item) {
       const id = this.createCompId()
@@ -216,17 +224,23 @@ export default {
       })
     },
     setGridMinHeight() {
+      if (!this.grid) return
       this.$nextTick(() => {
-        const currentRow = this.grid.el.getAttribute('data-gs-current-row') || 0
-        const cellHeight = this.grid.getCellHeight() || 0
-        const containerHeight = this.$refs.container.clientHeight
+        const currentRow = +this.grid.engine.getRow() || 0
+        const cellHeight = +this.grid.getCellHeight() || 0
+        const cellMargin = +this.grid.getMargin() || 0
         const thresholdHeight = 100
-        const calculateHeight =
-          +currentRow * +cellHeight + Math.max(thresholdHeight, cellHeight)
-        this.gridMinHeight =
-          calculateHeight > containerHeight - 100
-            ? `${calculateHeight}px`
-            : `${containerHeight}px`
+        const containerHeight = this.grid.el.parentNode
+          ? this.grid.el.parentNode.clientHeight
+          : this.grid.el.clientHeight
+        const calculateHeight = currentRow * (cellHeight + cellMargin)
+        const gridMinHeight = Math.max(
+          calculateHeight + thresholdHeight,
+          containerHeight
+        )
+        const minRow = Math.ceil(gridMinHeight / (cellHeight + cellMargin))
+        this.grid.el.setAttribute('data-gs-current-row', minRow)
+        this.grid.el.style.minHeight = gridMinHeight + 'px'
       })
     },
     formatList(arrs) {
@@ -239,7 +253,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .fd-design-pane {
-  position: relative;
   width: 100%;
   height: 100%;
   overflow-y: auto;
