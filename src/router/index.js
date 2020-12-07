@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-03-24 15:42:47
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-18 17:26:13
+ * @LastEditTime: 2020-11-30 18:19:05
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -15,7 +15,7 @@ const routes = [
   {
     path: '/',
     redirect: {
-      name: 'flow-design'
+      name: 'page-design-gridstack'
     }
   },
   {

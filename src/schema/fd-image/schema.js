@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-03-30 14:14:23
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-10-09 10:30:36
+ * @LastEditTime: 2020-11-30 18:20:24
  */
 const Image = {
   name: 'FdImage',
@@ -16,7 +16,7 @@ const Image = {
     style: {},
     children: null,
     on: {
-      test: `console.log('hi')`
+      click: `alert('hi')`
     },
     nativeOn: {}
   },

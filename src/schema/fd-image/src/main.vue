@@ -3,7 +3,7 @@
  * @Autor: Lizijie
  * @Date: 2020-03-30 14:14:23
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-09-10 11:34:37
+ * @LastEditTime: 2020-11-30 18:20:45
 -->
 <template>
   <div class="image">
@@ -29,7 +29,7 @@ export default {
   // },
   methods: {
     onClick(event) {
-      this.$emit('test', event)
+      this.$emit('click', event)
     }
   }
 }

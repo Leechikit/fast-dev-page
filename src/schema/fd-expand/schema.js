@@ -3,32 +3,27 @@
  * @Autor: Lizijie
  * @Date: 2020-06-09 15:10:41
  * @LastEditors: Lizijie
- * @LastEditTime: 2020-10-12 17:56:03
+ * @LastEditTime: 2020-12-07 17:52:50
  */
-const Cols = {
-  name: 'FdCols',
-  label: '多列布局组件',
-  icon: 'cols',
+const Expand = {
+  name: 'FdExpand',
+  label: '展开布局组件',
+  icon: 'expand',
   tips: '',
   isLayoutComponent: true,
   component: {
-    class: 'fd-cols',
+    class: 'fd-expand',
     props: {},
     style: {},
-    children: null,
+    children: [],
     on: {},
     nativeOn: {}
   },
   configs: {
-    cols: {
+    title: {
       name: 'ConfigInput',
-      label: '列数',
-      value: 2
-    },
-    space: {
-      name: 'ConfigInput',
-      label: '间隔（px）',
-      value: 0
+      label: '控件标题',
+      value: '展开收起'
     }
   },
   layout: {
@@ -41,4 +36,4 @@ const Cols = {
   }
 }
 
-export default Cols
+export default Expand

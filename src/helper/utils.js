@@ -65,6 +65,7 @@ const Utils = {
     for (let key in on) {
       formatOn[key] = this.createFunc(on[key], name, key)
     }
+    formatProps['data'] = schema.component
     let result = {
       name,
       class: className,
